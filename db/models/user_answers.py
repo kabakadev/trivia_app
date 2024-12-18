@@ -84,6 +84,25 @@ class UserAnswer:
                     user_answers.append(user_answer)
                 return user_answers
             return None
-              
+    @classmethod
+    def get_user_answers_by_question_id(cls, question_id):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """
+                SELECT *
+                FROM user_answers
+                WHERE question_id = ?
+                """
+            CURSOR.execute(sql, (question_id,))
+            rows = CURSOR.fetchall()
+            user_answers = []
+            if rows:
+                for row in rows:
+                    user_answer = cls(row[1], row[2], row[3])
+                    user_answer._user_answer_id = row[0]
+                    user_answers.append(user_answer)
+                return user_answers
+            return None
+
                   
            
