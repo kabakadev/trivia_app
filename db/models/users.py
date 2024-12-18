@@ -51,6 +51,20 @@ class User:
                     UPDATE users SET username = ?, is_admin = ? WHERE user_id = ?
                 """
                 CURSOR.execute(sql, (self.username, self.is_admin, self._user_id))
+    
+    @classmethod
+    def get_all_users(cls):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = "SELECT * FROM users"
+            rows = CURSOR.execute(sql).fetchall()
+            users = []
+            for row in rows:
+                user = cls(row[1], bool(row[2]))  
+                user._user_id = row[0]  
+                users.append(user)
+            
+            return users 
 
     @classmethod
     def get_user_by_id(cls,user_id):
