@@ -48,3 +48,23 @@ class UserAnswer:
                 )
                 """
             CURSOR.execute(sql)
+    
+    def save(self):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            if self._user_answer_id is None:
+                sql = """
+                INSERT INTO user_answers (user_id, question_id, choice_id) VALUES (?, ?, ?)
+                """
+            
+                CURSOR.execute(sql, (self.user_id, self.question_id, self.choice_id))
+                self._user_answer_id = CURSOR.lastrowid
+            else:
+                sql = """
+                UPDATE user_answers SET user_id = ?, question_id = ?, choice_id = ?, WHERE user_answer_id = ?
+                """
+         
+                CURSOR.execute(sql, (self.user_id, self.question_id, self.choice_id, self._user_answer_id))
+              
+                  
+           
