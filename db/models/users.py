@@ -90,10 +90,20 @@ class User:
         CONN.commit()
         CONN.close()
         self._user_id = None
-    
+    @classmethod
+    def drop_table(cls):
+        CONN = get_db_connection()
+        CURSOR = CONN.cursor()
+
+        sql = """DROP TABLE IF EXISTS users"""
+        CURSOR.execute(sql)
+        CONN.commit()
+        CONN.close()
 
 
 
+User.drop_table()
+print("user table has been dropped")
 user1 = User("justin",True)
 user2 = User("Ian" ,False)
 user1.create_table()
