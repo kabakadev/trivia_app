@@ -131,5 +131,10 @@ class UserAnswer:
           
             self._user_answer_id = None
 
-                  
-           
+user_answer1 = UserAnswer(user_id=1, question_id=1, choice_id=2)
+user_answer1.create_table()
+user_answer2 = UserAnswer(user_id=2, question_id=1, choice_id=3)
+user_answer1.save()
+user_answer2.save()
+print(f"Saved User Answer 1 ID: {user_answer1._user_answer_id}")
+print(f"Saved User Answer 2 ID: {user_answer2._user_answer_id}")
