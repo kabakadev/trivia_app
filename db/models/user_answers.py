@@ -103,6 +103,22 @@ class UserAnswer:
                     user_answers.append(user_answer)
                 return user_answers
             return None
+    @classmethod
+    def get_user_answer_by_user_and_question_id(cls, user_id, question_id):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """
+                SELECT *
+                FROM user_answers
+                WHERE user_id = ? AND question_id = ?
+                """
+            CURSOR.execute(sql, (user_id, question_id))
+            row = CURSOR.fetchone()
+            if row:
+                user_answer = cls(row[1], row[2], row[3])
+                user_answer._user_answer_id = row[0]
+                return user_answer
+            return None
 
                   
            
