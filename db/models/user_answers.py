@@ -32,3 +32,19 @@ class UserAnswer:
         if not isinstance(choice_id, int):
             raise ValueError("choice id must be an integer")
         self._choice_id = choice_id
+    @classmethod
+    def create_table(cls):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """
+                CREATE TABLE IF NOT EXISTS user_answers(
+                user_answer_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                question_id INTEGER,
+                choice_id INTEGER,
+                FOREIGN KEY (user_id) REFERENCES users(user_id),
+                FOREIGN KEY (question_id) REFERENCES questions(question_id),
+                FOREIGN KEY (choice_id) REFERENCES choices(choice_id)
+                )
+                """
+            CURSOR.execute(sql)
