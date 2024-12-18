@@ -119,6 +119,17 @@ class UserAnswer:
                 user_answer._user_answer_id = row[0]
                 return user_answer
             return None
+    def delete(self):
+        if self._user_answer_id is None:
+            raise ValueError("answers for this specific user does not exist in the database")
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """
+            DELETE FROM user_answers WHERE user_answer_id = ?
+            """
+            CURSOR.execute(sql, (self._user_answer_id,))
+          
+            self._user_answer_id = None
 
                   
            
