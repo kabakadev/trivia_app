@@ -4,6 +4,7 @@
 # from models.author import Author
 # from models.magazine import Magazine
 
+# from db import get_db_connection //this gives an error, I don't know why 
 from db_connection import get_db_connection
 class User:
     def __init__(self,username,is_admin):
