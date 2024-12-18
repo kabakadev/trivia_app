@@ -1,6 +1,6 @@
 import sqlite3
 
-DATABASE_NAME = './database/trivia.db'
+DATABASE_NAME = 'trivia.db'
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE_NAME)
