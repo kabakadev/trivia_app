@@ -72,4 +72,12 @@ class Question:
             sql = """DELETE * FROM questions WHERE question_id = ?  """
             CURSOR.execute(sql,(self._question_id,))
             self._question_id = None
+    @classmethod
+    def drop_table(cls):
+       with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+
+            sql = """DROP TABLE IF EXISTS questions"""
+            CURSOR.execute(sql)
+        
 
