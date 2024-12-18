@@ -81,4 +81,19 @@ class Choice:
                     choices.append(choice)
                 return choices
             return None
-        
+    @classmethod
+    def get_choice_by_id(cls, choice_id):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """
+                SELECT *
+                FROM choices
+                WHERE choice_id = ?
+                """
+            CURSOR.execute(sql, (choice_id,))
+            row = CURSOR.fetchone()
+            if row:
+                choice = cls(row[1], row[2], bool(row[3]))
+                choice._choice_id = row[0]
+                return choice
+            return None
