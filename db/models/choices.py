@@ -107,3 +107,19 @@ class Choice:
             """
             CURSOR.execute(sql, (self._choice_id,))
             self._choice_id = None
+
+
+Choice.create_table()
+
+choice1 = Choice(1, "Joe Biden", True)
+choice2 = Choice(1, "Donald Trump", False)
+choice3 = Choice(2, "Mount Everest", True)
+choice4 = Choice(2, "Kilimanjaro", False)
+
+choice1.save()
+choice2.save()
+choice3.save()
+choice4.save()
+
+choices_for_question1 = Choice.get_choices_by_question_id(1)
+choices_for_question2 = Choice.get_choices_by_question_id(2)
