@@ -1,5 +1,5 @@
 
-from db_connection import get_db_connection
+from db import get_db_connection
 class Question:
     def __init__(self,question_text,created_by):
         self._question_id = None
@@ -77,29 +77,7 @@ class Question:
     def drop_table(cls):
        with get_db_connection() as CONN:
             CURSOR = CONN.cursor()
-
             sql = """DROP TABLE IF EXISTS questions"""
             CURSOR.execute(sql)
-Question.drop_table()
-print("question table has been dropped")
-question1 = Question("who is the president of the USA?",1)
-question3 = Question("where is the tallest mountain?",2)
-question2 = Question("who has the biggest house in Dubai" ,1)
-question1.create_table()
 
-question1.save()
-question2.save()
-question3.save()
-question = question1.get_question_by_id(1)
-question_get = question2.get_question_by_id(2)
-
-if question:
-    print(f"question found: {question.question_text}")
-else:
-    print("question not found.")
-if question_get:
-    print(f"question found: {question_get.question_text}")
-else:
-    print("question not found.")
-        
 

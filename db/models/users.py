@@ -1,5 +1,4 @@
-# from db import get_db_connection //this gives an error, I don't know why 
-from db_connection import get_db_connection
+from db import get_db_connection
 class User:
     def __init__(self,username,is_admin):
         self._user_id = None
@@ -89,26 +88,4 @@ class User:
         
 
 
-
-User.drop_table()
-print("user table has been dropped")
-user1 = User("justin",True)
-user3 = User("justin",True)
-user2 = User("Ian" ,False)
-user1.create_table()
-
-user1.save()
-user2.save()
-user3.save()
-user = user1.get_user_by_id(1)
-user_get = user2.get_user_by_id(2)
-
-if user:
-    print(f"User found: {user.username}")
-else:
-    print("User not found.")
-if user_get:
-    print(f"User found: {user_get.username}")
-else:
-    print("User not found.")
 

@@ -1,4 +1,4 @@
-from db_connection import get_db_connection
+from db import get_db_connection
 class UserAnswer:
     def __init__(self,user_id,question_id,choice_id):
         self._user_answer_id = None
@@ -130,11 +130,10 @@ class UserAnswer:
             CURSOR.execute(sql, (self._user_answer_id,))
           
             self._user_answer_id = None
+    @classmethod
+    def drop_table(cls):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """DROP TABLE IF EXISTS user_answers"""
+            CURSOR.execute(sql)
 
-user_answer1 = UserAnswer(user_id=1, question_id=1, choice_id=2)
-user_answer1.create_table()
-user_answer2 = UserAnswer(user_id=2, question_id=1, choice_id=3)
-user_answer1.save()
-user_answer2.save()
-print(f"Saved User Answer 1 ID: {user_answer1._user_answer_id}")
-print(f"Saved User Answer 2 ID: {user_answer2._user_answer_id}")
