@@ -83,6 +83,22 @@ class User:
                 user._user_id = row[0] 
                 return user
         return None 
+    @classmethod
+    def get_user_by_username(cls,username):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """
+                SELECT *
+                FROM users
+
+                where username = ?
+                    """ 
+            row = CURSOR.execute(sql,(username,)).fetchone()
+            if row:
+                user = cls(row[1],bool(row[2]))
+                user._user_id = row[0]
+                return user
+            return None
     def delete(self):
         if self._user_id == None:
             raise ValueError("this user currently does not exist in the database")
