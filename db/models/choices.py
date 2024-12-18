@@ -46,3 +46,22 @@ class Choice:
                 )
                 """
             CURSOR.execute(sql)
+    def save(self):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            if self._choice_id is None:
+                sql = """
+                INSERT INTO choices (question_id, choice_text, is_correct) VALUES (?, ?, ?)
+                """
+            
+                CURSOR.execute(sql, (self.question_id, self.choice_text, int(self.is_correct)))
+                self._choice_id = CURSOR.lastrowid
+            else:
+                sql = """
+                UPDATE choices SET question_id = ?, choice_text = ?, is_correct = ? WHERE choice_id = ?
+                """
+            
+                CURSOR.execute(sql, (self.question_id, self.choice_text, int(self.is_correct), self._choice_id))
+               
+                 
+           
