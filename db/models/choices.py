@@ -62,6 +62,23 @@ class Choice:
                 """
             
                 CURSOR.execute(sql, (self.question_id, self.choice_text, int(self.is_correct), self._choice_id))
-               
-                 
-           
+    @classmethod
+    def get_choices_by_question_id(cls, question_id):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """
+                SELECT *
+                FROM choices
+                WHERE question_id = ?
+                """
+            CURSOR.execute(sql, (question_id,))
+            rows = CURSOR.fetchall()
+            choices = []
+            if rows:
+                for row in rows:
+                    choice = cls(row[1], row[2], bool(row[3])) 
+                    choice._choice_id = row[0]
+                    choices.append(choice)
+                return choices
+            return None
+        
