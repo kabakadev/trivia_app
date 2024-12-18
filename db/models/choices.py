@@ -31,3 +31,18 @@ class Choice:
         if not isinstance(is_correct, bool):
             raise ValueError("is correct must be a boolean either true or false")
         self._is_correct = is_correct
+    
+    @classmethod
+    def create_table(cls):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """
+                CREATE TABLE IF NOT EXISTS choices(
+                choice_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                question_id INTEGER,
+                choice_text TEXT NOT NULL,
+                is_correct BOOLEAN,
+                FOREIGN KEY (question_id) REFERENCES questions(question_id)
+                )
+                """
+            CURSOR.execute(sql)
