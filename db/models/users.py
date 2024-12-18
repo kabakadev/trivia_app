@@ -76,7 +76,7 @@ class User:
         with get_db_connection() as CONN:
             CURSOR = CONN.cursor()
 
-            sql = """DELETE * FROM users WHERE user_id = ?  """
+            sql = """DELETE FROM users WHERE user_id = ?  """
             CURSOR.execute(sql,(self._user_id,))
             self._user_id = None
     @classmethod
