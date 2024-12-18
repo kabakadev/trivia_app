@@ -1,9 +1,3 @@
-# from database.setup import create_tables
-# from database.connection import get_db_connection
-# from models.article import Article
-# from models.author import Author
-# from models.magazine import Magazine
-
 # from db import get_db_connection //this gives an error, I don't know why 
 from db_connection import get_db_connection
 class User:
@@ -89,13 +83,12 @@ class User:
             self._user_id = None
     @classmethod
     def drop_table(cls):
-        CONN = get_db_connection()
-        CURSOR = CONN.cursor()
+       with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
 
-        sql = """DROP TABLE IF EXISTS users"""
-        CURSOR.execute(sql)
-        CONN.commit()
-        CONN.close()
+            sql = """DROP TABLE IF EXISTS users"""
+            CURSOR.execute(sql)
+        
 
 
 
