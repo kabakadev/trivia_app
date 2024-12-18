@@ -65,6 +65,25 @@ class UserAnswer:
                 """
          
                 CURSOR.execute(sql, (self.user_id, self.question_id, self.choice_id, self._user_answer_id))
+    @classmethod
+    def get_user_answers_by_user_id(cls, user_id):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """
+                SELECT *
+                FROM user_answers
+                WHERE user_id = ?
+                """
+            CURSOR.execute(sql, (user_id,))
+            rows = CURSOR.fetchall()
+            user_answers = []
+            if rows:
+                for row in rows:
+                    user_answer = cls(row[1], row[2], row[3])
+                    user_answer._user_answer_id = row[0]
+                    user_answers.append(user_answer)
+                return user_answers
+            return None
               
                   
            
