@@ -63,4 +63,13 @@ class Question:
                 question._question_id = row[0] 
                 return question
         return None 
+    def delete(self):
+        if self._question_id == None:
+            raise ValueError("this question currently does not exist in the database")
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+
+            sql = """DELETE * FROM questions WHERE question_id = ?  """
+            CURSOR.execute(sql,(self._question_id,))
+            self._question_id = None
 
