@@ -35,8 +35,6 @@ class User:
             """
             CONN.execute(sql)
     def save(self):
-       
-       
         with get_db_connection() as CONN:
             CURSOR = CONN.cursor()
             sql_check = "SELECT * FROM users WHERE username = ?"

@@ -25,10 +25,25 @@ class Question:
     def create_table(cls):
         with get_db_connection() as CONN:
             sql = """
-                CREATE TABLE IF NOT EXISTS users(
-                user_id INTEGER PRIMARY KEY,
-                username TEXT NOT NULL,
-                is_admin BOOLEAN DEFAULT FALSE
+                CREATE TABLE IF NOT EXISTS questions(
+                question_id INTEGER PRIMARY KEY,
+                question_text TEXT NOT NULL,
+                FOREIGN KEY (created_by) REFERENCES users(user_id)
                 )
             """
             CONN.execute(sql)
+    def save(self):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            if self._question_id is None:
+                sql = """
+                    INSERT INTO questions (question_text, created_by) VALUES (?, ?)
+                """
+                CURSOR.execute(sql, (self.question_text, int(self.created_by)))
+                self._question_id = CURSOR.lastrowid
+            else:
+                sql = """
+                    UPDATE questions SET question_text = ?, created_by = ? WHERE question_id = ?
+                """
+                CURSOR.execute(sql, (self.question_text, self.created_by, self._question_id))
+
