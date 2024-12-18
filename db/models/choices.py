@@ -22,3 +22,12 @@ class Choice:
         if not isinstance(choice_text, str):
             raise ValueError("choice text must be a string")
         self._choice_text = choice_text
+    @property
+    def is_correct(self):
+        return self._is_correct
+
+    @is_correct.setter
+    def is_correct(self, is_correct):
+        if not isinstance(is_correct, bool):
+            raise ValueError("is correct must be a boolean either true or false")
+        self._is_correct = is_correct
