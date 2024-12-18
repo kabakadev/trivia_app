@@ -46,4 +46,21 @@ class Question:
                     UPDATE questions SET question_text = ?, created_by = ? WHERE question_id = ?
                 """
                 CURSOR.execute(sql, (self.question_text, self.created_by, self._question_id))
+    @classmethod
+    def get_question_by_id(cls,question_id):
+        with get_db_connection() as CONN:
+      
+            CURSOR = CONN.cursor()
+            sql = """
+                SELECT *
+                FROM questions
+
+                WHERE question_id = ?
+                """
+            row = CURSOR.execute(sql,(question_id,)).fetchone()
+            if row:
+                question = cls(row[1], bool(row[2])) 
+                question._question_id = row[0] 
+                return question
+        return None 
 
