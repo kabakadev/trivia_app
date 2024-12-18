@@ -45,6 +45,10 @@ class User:
     def save(self):
         CONN = get_db_connection()
         CURSOR = CONN.cursor()
+        sql_check = "SELECT * FROM users WHERE username = ?"
+        existing_user = CURSOR.execute(sql_check,(self.username,)).fetchone()
+        if existing_user:
+            raise ValueError(f"username '{self.username}' already exists")
         if self._user_id is None:  
                 sql = """
                 INSERT INTO users (username, is_admin) VALUES (?, ?)
@@ -78,12 +82,20 @@ class User:
 
 
 user1 = User("justin",True)
+user2 = User("Ian" ,False)
 user1.create_table()
+user2.create_table()
 user1.save()
+user2.save()
 user = user1.get_user_by_id(1)
+user_get = user2.get_user_by_id(2)
 
 if user:
     print(f"User found: {user.username}")
+else:
+    print("User not found.")
+if user_get:
+    print(f"User found: {user_get.username}")
 else:
     print("User not found.")
 
