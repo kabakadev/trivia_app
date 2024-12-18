@@ -78,6 +78,19 @@ class User:
             user._user_id = row[0] 
             return user
         return None 
+    def delete(self):
+        if self._user_id == None:
+            raise ValueError("this user currently does not exist in the database")
+        CONN = get_db_connection()
+        CURSOR = CONN.cursor()
+
+        sql = """DELETE * FROM users WHERE user_id = ?  """
+        CURSOR.execute(sql,(self._user_id,))
+
+        CONN.commit()
+        CONN.close()
+        self._user_id = None
+    
 
 
 
