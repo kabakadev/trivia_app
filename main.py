@@ -184,18 +184,18 @@ def main_menu():
         if current_user.is_admin:
             print("Hello admin\n")
             options = [
-                "\nAdd New Question",
-                "\nDelete Question",
-                "\nView All Questions",
-                "\nPlay Trivia",
-                "\nExit"
+                "Add New Question",
+                "Delete Question",
+                "View All Questions",
+                "Play Trivia",
+                "Exit"
                 ]
         else:
             print("Hello regular user\n")
             options = [
-                "\nView All Questions",
-                "\nPlay Trivia",
-                "\nExit"
+                "View All Questions",
+                "Play Trivia",
+                "Exit"
                ]
         
         choice = get_user_choice(options)
