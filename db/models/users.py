@@ -5,6 +5,9 @@ class User:
         self.username = username
         self.is_admin = is_admin
     @property
+    def user_id(self):
+        return self._user_id
+    @property
     def username(self):
         return self._username
     @username.setter
