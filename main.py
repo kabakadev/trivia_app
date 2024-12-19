@@ -105,7 +105,40 @@ def play_trivia(current_user_id):
         print("No questions available for trivia. which is weird, I will look into it.")
         return
     score = 0
-    
+    for question in questions:
+        print(f"Question: {question.question_text}")
+        choices = Choice.get_choices_by_question_id(question._question_id)
+        if not choices:
+            print("No choices available for this question, which is weird again and should not be happening. skipping...")
+            continue
+        for index,choice in enumerate(choices,start=1):
+            print(f"{index}.{choice.choice_text}")
+        while True:
+            try:
+                selected_index = int(input("Select Your answer (1-4): ")) -1
+                if 0 <= selected_index <len(choices):
+                    break
+                else:
+                    print("Invalid Choice. please select a valid option")
+            except ValueError:
+                print("Invalid input. Please enter a number")
+        selected_choice = choices[selected_index]
+
+        user_answer = UserAnswer(
+            user_id=current_user_id,
+            question_id=question._question_id,
+            choice_id=selected_choice._choice_id
+        )
+        user_answer.save()
+
+        if selected_choice.is_correct:
+            print("Correct!! ")
+            score +=1
+        else:
+            print("Incorrect, better luck next time!")
+        print("-" * 20)
+    print(f"You have completed the trivia! your total score is: {score}/{len(questions)}")
+
 def main_menu():
     while True:
         print("\nMain Menu:")
@@ -156,7 +189,7 @@ def main_menu():
             elif choice == 2:
                 view_all_questions()
             elif choice == 3:
-                print("This feature is not yet implemented.")
+                play_trivia(current_user.user_id)
             elif choice == 4:
                 print("Exiting Trivia App.")
                 break
@@ -164,7 +197,7 @@ def main_menu():
             if choice == 0:
                 view_all_questions()
             elif choice == 1:
-                print("This feature is not yet implemented.")
+                play_trivia(current_user.user_id)
             elif choice == 2:
                 print("Exiting Trivia App.")
                 break
