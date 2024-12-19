@@ -5,15 +5,12 @@ from db.models.users import User
 
 
 def create_tables():
-    User.drop_table()
-    Question.drop_table()
-    UserAnswer.drop_table()
-    Choice.drop_table()
+
 
     User.create_table()
     Question.create_table()
     UserAnswer.create_table()
-    Choice.create_table()
+    # Choice.create_table() currently not being used, but when the need arises, I will add it back
 
 
     
@@ -81,7 +78,7 @@ def delete_questions():
         print(f"{question._question_id}:{question.question_text}")
     while True:
         try:
-            question_id = int(input("\nEnter the ID of the question you want to delete (or 0 to cancel): "))
+            question_id = int(input("\nEnter the ID of the question you want to delete, this ID is the number before the (:) colon before each question text  (or 0 to cancel): "))
             if question_id == 0:
                 print("Delete operation cancelled.")
                 return
