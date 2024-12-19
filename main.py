@@ -21,7 +21,7 @@ def create_tables():
 
 
 def check_user_priviledges():
-    if User.get_all_users() is None:
+    if len(User.get_all_users()) == 0:
         print("No users found here, we need atleast one admin account")
         username = input("Enter a username for the admin:") 
         while True:
@@ -220,7 +220,6 @@ def main_menu():
                 print("Exiting Trivia App.")
                 break
         
-        print("Invalid choice. Please try again.")
 if __name__ == "__main__":
     create_tables() 
     check_user_priviledges()
