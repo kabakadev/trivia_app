@@ -10,10 +10,31 @@ def create_tables():
     User.create_table()
     Question.create_table()
     UserAnswer.create_table()
-    # Choice.create_table() currently not being used, but when the need arises, I will add it back
+    Choice.create_table() 
 
 
-    
+def login():
+    while True:
+        username = input("Enter your username: ").strip()
+        user = User.get_user_by_username(username)
+        if user:
+            print(f"Welcome back {user.username}! please explore the options below")
+            return user
+        else:
+            print("User not found, do you want to create a new user?")
+            choice = input("Type 'yes' to create a new account here,'no' to retry or 'q' to leave if this was a mistake")
+            if choice == 'q':
+                break
+            elif choice == 'yes':
+                is_admin = input("Do you want to create an admin or a regular user(an admin has priviledges) type 'yes' or 'no': ").lower()
+                is_admin = is_admin == 'yes' #will result to either True or False
+                new_user = User(username=username, is_admin=is_admin)
+                new_user.save()
+                print(f"User '{username}' created successfully")
+                return new_user
+            else:
+                print("Retrying login...")
+
 
 
 
@@ -153,15 +174,9 @@ def play_trivia(current_user_id):
         print("-" * 20)
     print(f"You have completed the trivia! your total score is: {score}/{len(questions)}")
 
-def main_menu():
+def main_menu(current_user):
     while True:
-        print("\nMain Menu:")
-        print("Type 'q' to quit or exit")
-        username = input("Enter your username or type q to quit: ")
-        if username.lower() == 'q':
-            print("The program has stopped, hoping to see you again!")
-            break
-        current_user = User.get_user_by_username(username)
+        print(f"\nWelcome, {current_user.username}")
         if current_user is None:
             print("Username not found, we will create a new user...")
             is_admin_input = input("Is this user an admin? (yes/no): ").lower()
@@ -220,4 +235,6 @@ def main_menu():
 if __name__ == "__main__":
     create_tables() 
     check_user_priviledges()
-    main_menu()
+    while True:
+        current_user = login()
+        main_menu(current_user)
