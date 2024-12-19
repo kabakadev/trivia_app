@@ -19,7 +19,12 @@ def check_user_priviledges():
         print(f"Admin User '{username}' has been created successfully")
 def main_menu():
     while True:
-        username = input("Enter your username: ")
+        print("\nMain Menu:")
+        print("Type 'q' to quit or exit")
+        username = input("Enter your username or type q to quit: ")
+        if username.lower() == 'q':
+            print("The program has stopped, hoping to see you again!")
+            break
         current_user = User.get_user_by_username(username)
         if current_user is None:
             print("Username not found, we will create a new user...")
@@ -32,3 +37,5 @@ def main_menu():
             local_or_admin_user = User(username, is_admin)
             local_or_admin_user.save()
             print(f"User '{username}' created successfully!")
+        else:
+            print(f"Welcome back, {current_user.username} Admin status:{current_user.is_admin}") 
