@@ -185,6 +185,7 @@ def main_menu(current_user):
                 "Delete Question",
                 "View All Questions",
                 "Play Trivia",
+                "Logout",
                 "Exit"
                 ]
         else:
@@ -192,6 +193,7 @@ def main_menu(current_user):
             options = [
                 "View All Questions",
                 "Play Trivia",
+                "Logout",
                 "Exit"
                ]
         
@@ -206,16 +208,22 @@ def main_menu(current_user):
             elif choice == 3:
                 play_trivia(current_user.user_id)
             elif choice == 4:
+                print(f"Logging you out! godbye {current_user.username}")
+                return
+            elif choice == 5:
                 print("Exiting Trivia App.")
-                break
+                exit()
         else:
             if choice == 0:
                 view_all_questions()
             elif choice == 1:
                 play_trivia(current_user.user_id)
             elif choice == 2:
+                print(f"Logging you out! godbye {current_user.username}")
+                return
+            elif choice == 3:
                 print("Exiting Trivia App.")
-                break
+                exit()
         
 if __name__ == "__main__":
     create_tables() 
@@ -224,6 +232,5 @@ if __name__ == "__main__":
         current_user = login()
         if current_user:
             main_menu(current_user)
-            break
         else:
             break
