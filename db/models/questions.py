@@ -6,6 +6,10 @@ class Question:
         self.question_text = question_text
         self.created_by = created_by
     @property
+    def question_id(self):
+        return self._question_id
+
+    @property
     def question_text(self):
         return self._question_text
     @question_text.setter
