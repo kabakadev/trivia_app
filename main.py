@@ -24,7 +24,7 @@ def login():
             print("User not found, do you want to create a new user?")
             choice = input("Type 'yes' to create a new account here,'no' to retry or 'q' to leave if this was a mistake")
             if choice == 'q':
-                break
+                return False
             elif choice == 'yes':
                 is_admin = input("Do you want to create an admin or a regular user(an admin has priviledges) type 'yes' or 'no': ").lower()
                 is_admin = is_admin == 'yes' #will result to either True or False
@@ -176,22 +176,7 @@ def play_trivia(current_user_id):
 
 def main_menu(current_user):
     while True:
-        print(f"\nWelcome, {current_user.username}")
-        if current_user is None:
-            print("Username not found, we will create a new user...")
-            is_admin_input = input("Is this user an admin? (yes/no): ").lower()
-            if is_admin_input in ["yes", "no"]:
-                is_admin = is_admin_input == "yes"
-
-            else:
-                print("Invalid input. Please enter 'yes' or 'no'.")
-            local_or_admin_user = User(username, is_admin)
-            local_or_admin_user.save()
-            print(f"User '{username}' created successfully!")
-            current_user = local_or_admin_user
-        else:
-            print(f"Welcome back, {current_user.username} Admin status:{current_user.is_admin}") 
-      
+        print(f"Welcome, {current_user.username} Admin status:{current_user.is_admin}") 
         options= []
         if current_user.is_admin:
             print("Hello admin\n")
@@ -237,4 +222,7 @@ if __name__ == "__main__":
     check_user_priviledges()
     while True:
         current_user = login()
-        main_menu(current_user)
+        if current_user:
+            main_menu(current_user)
+        else:
+            break
