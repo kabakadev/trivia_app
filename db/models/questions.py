@@ -48,6 +48,19 @@ class Question:
                 """
                 CURSOR.execute(sql, (self.question_text, self.created_by, self._question_id))
     @classmethod
+    def get_all_questions(cls):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = "SELECT * FROM questions"
+            rows = CURSOR.execute(sql).fetchall()
+            questions = []
+            for row in rows:
+                question = cls(row[1], int(row[2]))  
+                question._question_id = row[0]  
+                questions.append(question)
+            
+            return questions
+    @classmethod
     def get_question_by_id(cls,question_id):
         with get_db_connection() as CONN:
       
