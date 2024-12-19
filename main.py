@@ -5,15 +5,15 @@ from db.models.users import User
 
 
 def create_tables():
-    Question.drop_table()
-    Choice.drop_table()
-    UserAnswer.drop_table()
     User.drop_table()
+    Question.drop_table()
+    UserAnswer.drop_table()
+    Choice.drop_table()
 
-    Question.create_table()
-    Choice.create_table()
-    UserAnswer.create_table()
     User.create_table()
+    Question.create_table()
+    UserAnswer.create_table()
+    Choice.create_table()
 
 
     
@@ -176,6 +176,7 @@ def main_menu():
             local_or_admin_user = User(username, is_admin)
             local_or_admin_user.save()
             print(f"User '{username}' created successfully!")
+            current_user = local_or_admin_user
         else:
             print(f"Welcome back, {current_user.username} Admin status:{current_user.is_admin}") 
       
