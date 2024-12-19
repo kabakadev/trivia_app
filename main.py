@@ -14,9 +14,12 @@ def check_user_priviledges():
             except:
                 break
         while True:
-            is_admin = input("Is this user an admin? (yes/no):").lower()
-            if is_admin in ["yes","no"]:
+            is_admin = input("This user has to be an amdin type: (yes)").lower()
+            if is_admin in ["yes"]:
                 is_truly_admin = is_admin == "yes"
                 break
             else:
-                print("Invalid input. Please enter 'yes' or 'no'")
+                print("Invalid input. Please enter 'yes'")
+        admin_user = User(username,is_truly_admin)
+        admin_user.save()
+        print(f"Admin User '{username}' has been created successfully")
