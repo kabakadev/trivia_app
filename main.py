@@ -31,7 +31,26 @@ def get_user_choice(options):
                 print(f"Invalid choice. Please enter a number between 0 and {len(options) - 1}.")
         except ValueError:
             print("Invalid input. Please enter a number.")
-    
+def create_questions(admin_user_id):
+    print('\nAdd a new question')
+    question_text = input("Enter the question text: ").strip()
+    if not question_text:
+        print("Question text cannot be empty")
+        return
+    question = Question(question_text, admin_user_id)
+    question.sve()
+
+    print("Now, let's add multiple-choice options for this question")
+    choices = []
+
+    for i in range(4): #each question will be constrained to only 4 multiple choices
+        choice_text = input(f"Enter choice{i + 1}: ").strip()
+        is_correct = input("Is this the correct answer? (yes/no): ").lower() == "yes"
+        choice = Choice(question._question_id,choice_text,is_correct)
+        choices.append(choice)
+    for choice in choices:
+        choice.save()
+    print(f"Question '{question_text}' with choices has been added successfully ")
 def main_menu():
     while True:
         print("\nMain Menu:")
@@ -76,7 +95,7 @@ def main_menu():
         choice = get_user_choice(options)
         if current_user.is_admin:
             if choice == 0:
-                create_question(current_user.user_id) 
+                create_questions(current_user.user_id) 
             elif choice == 1:
                 delete_question()
             elif choice == 2:
