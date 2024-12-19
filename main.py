@@ -55,7 +55,7 @@ def create_questions(admin_user_id):
         print("Question text cannot be empty")
         return
     question = Question(question_text, admin_user_id)
-    question.sve()
+    question.save()
 
     print("Now, let's add multiple-choice options for this question")
     choices = []
