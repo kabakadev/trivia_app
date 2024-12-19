@@ -98,6 +98,14 @@ def view_all_questions():
         else:
             print("   No choices available for this question which is weird, each question must contain choices")
         print("-" * 20)
+def play_trivia(current_user_id):
+    print("\nLet's play trivia! \n")
+    questions = Question.get_all_questions()
+    if not questions:
+        print("No questions available for trivia. which is weird, I will look into it.")
+        return
+    score = 0
+    
 def main_menu():
     while True:
         print("\nMain Menu:")
