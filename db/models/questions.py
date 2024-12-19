@@ -82,7 +82,7 @@ class Question:
             raise ValueError("this question currently does not exist in the database")
         with get_db_connection() as CONN:
             CURSOR = CONN.cursor()
-
+            CURSOR.execute("DELETE FROM choices WHERE question_id = ?", (self._question_id,))
             sql = """DELETE FROM questions WHERE question_id = ?  """
             CURSOR.execute(sql,(self._question_id,))
             self._question_id = None

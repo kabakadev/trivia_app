@@ -51,6 +51,37 @@ def create_questions(admin_user_id):
     for choice in choices:
         choice.save()
     print(f"Question '{question_text}' with choices has been added successfully ")
+
+
+def delete_questions():
+    print("Fetching all questions ...\n")
+    questions = Question.get_all_questions()
+    if not questions:
+        print("No question available to delete")
+        return
+    print("Available Questions")
+    for question in questions:
+        print(f"{question._question_id}:{question.question_text}")
+    while True:
+        try:
+            question_id = int(input("\nEnter the ID of the question you want to delete (or 0 to cancel): "))
+            if question_id == 0:
+                print("Delete operation cancelled.")
+                return
+            question_to_delete = Question.get_question_by_id(question_id)
+            if question_to_delete is None:
+                print("Invalid question ID. Please try again.")
+            else:
+                break
+        except ValueError:
+            print("Invalid input. Please enter a valid question ID.")
+    confirm = input(f"Are you sure you want to delete the question: '{question_to_delete.question_text}'? (yes/no): ").lower()
+    if confirm == "yes":
+        question_to_delete.delete()
+        print("question deleted successfully")
+    else:
+        print("You have cancelled this deleting operation and the question is not deleted")
+
 def main_menu():
     while True:
         print("\nMain Menu:")
@@ -97,7 +128,7 @@ def main_menu():
             if choice == 0:
                 create_questions(current_user.user_id) 
             elif choice == 1:
-                delete_question()
+                delete_questions()
             elif choice == 2:
                 view_all_questions()
             elif choice == 3:
