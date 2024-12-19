@@ -26,7 +26,7 @@ def login():
             if choice == 'q':
                 return False
             elif choice == 'yes':
-                is_admin = input("Do you want to create an admin or a regular user(an admin has priviledges) type 'yes' or 'no': ").lower()
+                is_admin = input("Do you want to create an admin or a regular user(an admin has priviledges) type 'yes' for ADMIN or 'no' for REGULAR: ").lower()
                 is_admin = is_admin == 'yes' #will result to either True or False
                 new_user = User(username=username, is_admin=is_admin)
                 new_user.save()
@@ -224,5 +224,6 @@ if __name__ == "__main__":
         current_user = login()
         if current_user:
             main_menu(current_user)
+            break
         else:
             break
