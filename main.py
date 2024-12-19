@@ -81,7 +81,23 @@ def delete_questions():
         print("question deleted successfully")
     else:
         print("You have cancelled this deleting operation and the question is not deleted")
+def view_all_questions():
+    print("fetching questions...")
+    questions = Question.get_all_questions()
 
+    if not questions:
+        print("No questions availabel")
+        return
+    print("trivia questions:\n")
+    for question in questions:
+        print(f"Question ID {question._question_id} : {question.question_text}")
+        choices = Choice.get_choices_by_question_id(question.question_id)
+        if choices:
+            for index,choice in enumerate(choices,start =1):
+                print(f"   {index}, {choice.choice_text}")
+        else:
+            print("   No choices available for this question which is weird, each question must contain choices")
+        print("-" * 20)
 def main_menu():
     while True:
         print("\nMain Menu:")
