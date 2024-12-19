@@ -82,7 +82,7 @@ class Question:
                 return question
         return None 
     def delete(self):
-        from models.choices import Choice
+        from db.models.choices import Choice
         if self._question_id == None:
             raise ValueError("this question currently does not exist in the database")
         choices = Choice.get_choices_by_question_id(self._question_id)
