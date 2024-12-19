@@ -3,6 +3,23 @@ from db.models.choices import Choice
 from db.models.user_answers import UserAnswer
 from db.models.users import User
 
+
+def create_tables():
+    Question.drop_table()
+    Choice.drop_table()
+    UserAnswer.drop_table()
+    User.drop_table()
+
+    Question.create_table()
+    Choice.create_table()
+    UserAnswer.create_table()
+    User.create_table()
+
+
+    
+
+
+
 def check_user_priviledges():
     if User.get_all_users() is None:
         print("No users found here, we need atleast one admin account")
@@ -203,3 +220,7 @@ def main_menu():
                 break
         
         print("Invalid choice. Please try again.")
+if __name__ == "__main__":
+    create_tables() 
+    check_user_priviledges()
+    main_menu()
