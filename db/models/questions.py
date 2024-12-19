@@ -78,11 +78,18 @@ class Question:
                 return question
         return None 
     def delete(self):
+        from choices import Choice
         if self._question_id == None:
             raise ValueError("this question currently does not exist in the database")
+        choices = Choice.get_choices_by_question_id(self._question_id)
+        if choices:
+            for choice in choices:
+                choice.delete()
+        else:
+            print("No choices associated with this question, something seems off here...")
+
         with get_db_connection() as CONN:
             CURSOR = CONN.cursor()
-            CURSOR.execute("DELETE FROM choices WHERE question_id = ?", (self._question_id,))
             sql = """DELETE FROM questions WHERE question_id = ?  """
             CURSOR.execute(sql,(self._question_id,))
             self._question_id = None
