@@ -14,7 +14,7 @@
 
 ## Project Description
 
-The Trivia CLI Application is an interactive command-line tool designed for creating and playing trivia quizzes. The application supports user roles with different privileges: administrators and regular users. Administrators can manage questions (add, edit, delete) and control the flow of the trivia quizzes, while regular users can participate by answering questions. The application stores data persistently using SQLite3 and ensures a smooth user experience with robust input handling and role-based access control.
+The Trivia CLI Application is an interactive command-line tool designed for creating and playing trivia quizzes. The application supports user roles with different privileges: administrators and regular users. Administrators can manage questions (add,delete) and control the flow of the trivia quizzes, while regular users can participate by answering questions. The application stores data persistently using SQLite3 and ensures a smooth user experience with robust input handling and role-based access control.
 
 ---
 
@@ -117,9 +117,20 @@ Users can exit the program at any point.
 
 In here the admin can type any of the numbers displayed before each menu to select the menu options
 
-- **0. Add New Question**: Allows the admin to create a new trivia question and save it to the database. The admin can type 0 or leave it blank to go back to the main menu , however if they choose to type a question, they will be prompted for the options to this question and their corresponding correctness, if they enter an option, they can decide if that option is correct or not, by typing 'yes' or 'no', each question by convention can only have one answer but this is for the admin to decide, the options are limited to four for each question
-- **1. Delete Question**: Fetches all questions and enables the admin to delete a specific question by its ID.The admin can type 0 to cancel this process, The ID of the question is the number that appears before the semicolon(:) e.g 1:Which is the most fastest car in the world? (1) will be the ID of that question. if the admin picks it, he/she will be prompted again and can type 'yes' or 'no' to confirm that action, if they type yes, then the question will be deleted, if they type no then they will go back to the main menu
+- **0. Add New Question**: Allows the admin to create a new trivia question and save it to the database. The admin can type 0 or leave it blank to go back to the main menu ,
+
+however if they choose to type a question, they will be prompted for the options to this question and their corresponding correctness, if they enter an option, they can decide if that option is correct or not, by typing 'yes' or 'no'.
+
+each question by convention can only have one answer but this is for the admin to decide, the options are limited to four for each question
+
+- **1. Delete Question**: Fetches all questions and enables the admin to delete a specific question by its ID.The admin can type 0 to cancel this process.
+
+The ID of the question is the number that appears before the semicolon(:) e.g 1:Which is the most fastest car in the world? (1) will be the ID of that question.
+
+if the admin picks it, he/she will be prompted again and can type 'yes' or 'no' to confirm that action, if they type yes, then the question will be deleted, if they type no then they will go back to the main menu
+
 - **2. View All Questions**: Displays all questions in the database, including their multiple-choice answers.After the questions are shown, they will be automatically be taken back to the main menu.
+
 - **3. Play Trivia**: Allows the admin to play the trivia game..When user answers each question which is turn based, they willl get feedback wether the answer they gave is correct or false, answering the question is by
 - **4. Logout**: Logs out the current admin and returns to the login/registration prompt.
 - **5. Exit**: Exits the program.
@@ -129,7 +140,10 @@ In here the admin can type any of the numbers displayed before each menu to sele
 In here a regular user can choose any of the numbers displayed before each menu to select the menu optons
 
 - **0. View All Questions**: Displays all questions in the database, including their multiple-choice answers.
-- **1. Play Trivia**: Starts the trivia game for the user to answer questions and track their score.When user answers each question which is turn based, they willl get feedback wether the answer they gave is correct or false, answering the question is by number based, the user can select the answer by entering a number (1-4 ) each number corresponding to the option being chosen.
+- **1. Play Trivia**: Starts the trivia game for the user to answer questions and track their score.
+
+When user answers each question which is turn based, they willl get feedback wether the answer they gave is correct or false, answering the question is by number based, the user can select the answer by entering a number (1-4 ) each number corresponding to the option being chosen.
+
 - **2. Logout**: Logs out the current user and returns to the login/registration prompt.
 - **3. Exit**: Exits the program.
 
