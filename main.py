@@ -15,6 +15,14 @@ def create_tables():
 
 def login():
     while True:
+        print("\nWelcome to the login or registration section")
+        print("The list of users is shown below both regular and admin, currently there is no encryption")
+        users = User.get_all_users()
+        if users:
+            print("\nCurrent users:")
+            for user in users:
+                status = "Admin" if user.is_admin else "Regular"
+                print(f"-{user.username} ({status})")
         
         username = input("Enter your username: ").strip()
         user = User.get_user_by_username(username)
