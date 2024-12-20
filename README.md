@@ -105,22 +105,35 @@ Regular users can:
 
 Users can exit the program at any point.
 
+#### Check user priviledges
+
+This program can only be used when there is an admin account, when there is no user or an admin in the database, a different
+prompt for creating an admin will be shown, this is a rare occurence that can happen if any updates happen and the tables
+created at the point of this program iteration are dropped, I will take measures to ensure that does not happen.
+
 #### Login/Registration Prompt
 
-1. **Current Users**: The application displays a list of existing users and their roles (Admin/Regular User).
-2. **Login**: Enter your username to log in.
-3. **Create New User**: Enter a new username to create an account.
-4. **Quit**: Type 'q' to exit the program.
+- **Current Users**:When you enter the application for the first time,it displays a list of existing users and their roles (Admin/Regular User).
+- **Login**: Enter your username to log in.You can pick it from the list of the Current users shown above the username prompt.
+
+- **Create New User**:If for any reasons your name is not shown in Current users, you can enter a new username to create an account.
+
+- **Revert actions**: you can revert any actions during the creation of your user, and either exit the program by pressing 'q' or you can press 'no' to retry this entire process.
+
+- **Quit**: Type 'q' to the username input field to exit the program. This is the only key word and should not be used when creating a user.
+- **Super user priviledges**: in here you can choose to create an accunt as an admin or as a regular user.
+  - An admin has extra priviledges like creating questions and deleting them and more to come in future updates,
+  - A regular user can just view the questions and play the trivia game
 
 #### Admin Menu Options
 
 In here the admin can type any of the numbers displayed before each menu to select the menu options
 
-- **0. Add New Question**: Allows the admin to create a new trivia question and save it to the database. The admin can type 0 or leave it blank to go back to the main menu ,
+- **0. Add New Question**: Allows the admin to create a new trivia question and save it to the database. The admin can type 0 or leave it blank to go back to the main menu.
 
-however if they choose to type a question, they will be prompted for the options to this question and their corresponding correctness, if they enter an option, they can decide if that option is correct or not, by typing 'yes' or 'no'.
+  - However if they choose to type a question, they will be prompted for the options to this question and their corresponding correctness, if they enter an option, they can decide if that option is correct or not, by typing 'yes' or 'no'.
 
-each question by convention can only have one answer but this is for the admin to decide, the options are limited to four for each question
+  - Each question by convention can only have one answer but this is for the admin to decide, the options are limited to four for each question.
 
 - **1. Delete Question**: Fetches all questions and enables the admin to delete a specific question by its ID.The admin can type 0 to cancel this process.
 
