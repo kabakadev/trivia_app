@@ -15,14 +15,15 @@ def create_tables():
 
 def login():
     while True:
+        
         username = input("Enter your username: ").strip()
         user = User.get_user_by_username(username)
         if user:
             print(f"Welcome back {user.username}! please explore the options below")
             return user
         else:
-            print("User not found, do you want to create a new user?")
-            choice = input("Type 'yes' to create a new account here,'no' to retry or 'q' to leave if this was a mistake")
+            print("User not found, do you want to create a new user?: ")
+            choice = input("Type 'yes' to create a new account here,'no' to retry or 'q' to leave if this was a mistake: ").strip()
             if choice == 'q':
                 return False
             elif choice == 'yes':
@@ -68,9 +69,12 @@ def get_user_choice(options):
             print("Invalid input. Please enter a number.")
 def create_questions(admin_user_id):
     print('\nAdd a new question')
-    question_text = input("Enter the question text: ").strip()
+    question_text = input("Enter the question text (or press type 0 or leave blank to go back to the main menu): ").strip()
     if not question_text:
-        print("Question text cannot be empty")
+        print("You did not type anything, you can try again, going back to the main menu...")
+        return
+    if question_text == '0':
+        print("You can try again, going back to the main menu...")
         return
     question = Question(question_text, admin_user_id)
     question.save()
@@ -176,7 +180,7 @@ def play_trivia(current_user_id):
 
 def main_menu(current_user):
     while True:
-        print(f"Welcome, {current_user.username} Admin status:{current_user.is_admin}") 
+        print(f"User:{current_user.username} Admin status:{current_user.is_admin}") 
         options= []
         if current_user.is_admin:
             print("Hello admin\n")
