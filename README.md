@@ -122,7 +122,10 @@ however if they choose to type a question, they will be prompted for the options
 
 each question by convention can only have one answer but this is for the admin to decide, the options are limited to four for each question
 
-- **1. Delete Question**: Fetches all questions and enables the admin to delete a specific question by its ID.The admin can type 0 to cancel this process. - The ID of the question is the number that appears before the semicolon(:) e.g 1:Which is the most fastest car in the world? (1) will be the ID of that question. - if the admin picks it, he/she will be prompted again and can type 'yes' or 'no' to confirm that action, if they type yes, then the question will be deleted, if they type no then they will go back to the main menu
+- **1. Delete Question**: Fetches all questions and enables the admin to delete a specific question by its ID.The admin can type 0 to cancel this process.
+
+  - The ID of the question is the number that appears before the semicolon(:) e.g 1:Which is the most fastest car in the world? (1) will be the ID of that question.
+  - if the admin picks it, he/she will be prompted again and can type 'yes' or 'no' to confirm that action, if they type yes, then the question will be deleted, if they type no then they will go back to the main menu
 
 - **2. View All Questions**: Displays all questions in the database, including their multiple-choice answers.After the questions are shown, they will be automatically be taken back to the main menu.
 
@@ -138,7 +141,9 @@ each question by convention can only have one answer but this is for the admin t
 In here a regular user can choose any of the numbers displayed before each menu to select the menu optons
 
 - **0. View All Questions**: Displays all questions in the database, including their multiple-choice answers.
-- **1. Play Trivia**: Starts the trivia game for the user to answer questions and track their score. - When user answers each question which is turn based, they willl get feedback wether the answer they gave is correct or false, answering the question is by number based, the user can select the answer by entering a number (1-4 ) each number corresponding to the option being chosen.
+- **1. Play Trivia**: Starts the trivia game for the user to answer questions and track their score.
+
+  - When user answers each question which is turn based, they willl get feedback wether the answer they gave is correct or false, answering the question is by number based, the user can select the answer by entering a number (1-4 ) each number corresponding to the option being chosen.
 
 - **2. Logout**: Logs out the current user and returns to the login/registration prompt.
 - **3. Exit**: Exits the program.
