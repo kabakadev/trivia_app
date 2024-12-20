@@ -47,7 +47,7 @@ The Trivia CLI Application is an interactive command-line tool designed for crea
 ### Prerequisites
 
 - Python 3.7+
-- SQLite3 installed on your system
+- SQLite3 installed on your system, this comes standard with a python installation.
 
 ### Installation Steps
 
@@ -55,14 +55,21 @@ The Trivia CLI Application is an interactive command-line tool designed for crea
 
    ```bash
    git clone https://github.com/kabakadev/trivia_app.git
-   cd trivia_app
    ```
 
-2. **Install Dependencies**:
+2. **cd into the directory**:
+
+```bash
+  cd trivia_app
+```
+
+3. **Install Dependencies**:
+
    This project does not have external dependencies outside the Python standard library. Ensure you have Python 3.8+ installed.
    You can use pip to target the exact version of the current python used in this project which is Python 3.8.13 or installing the latest version of python from the python.org website.
 
-3. **Set Up the Database**:
+4. **Set Up the Database**:
+
    Run the following command to create the necessary database tables:
 
    ```bash
@@ -71,7 +78,7 @@ The Trivia CLI Application is an interactive command-line tool designed for crea
 
    The program will automatically create all required tables.
 
-4. **Run the Application**:
+5. **Run the Application**:
    Start the program by running:
    ```bash
    python main.py
