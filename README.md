@@ -37,7 +37,7 @@ The Trivia CLI Application is an interactive command-line tool designed for crea
 - **Question Management**: Administrators can create and delete questions from the trivia database.
 - **Trivia Gameplay**: Regular users can answer question and view results and score based on what they got right or wrong.
 - **Persistent Storage**: Data is stored in a SQLite3 database for reliability and persistence.
-- **User Authentication**: Users can log in by selecting an existing username or create a new account.
+- **User basic login**: Users can log in by selecting an existing username or create a new account.
 - **Exit Options**: Users can exit the program at any point for convenience.
 
 ---
@@ -47,11 +47,12 @@ The Trivia CLI Application is an interactive command-line tool designed for crea
 ### Prerequisites
 
 - Python 3.7+
-- SQLite3, this comes standard with the current python version above or the latest python installation .
+- SQLite3, this comes standard with the current python version above or the latest python installation.
 
 ### Installation Steps
 
 1. **Clone the Repository**:
+   Open your preferred terminal (e.g., Git Bash, Ubuntu WSL, any terminal that supports Git or if on any debian based linux, the default terminal will be ok.) and run:
 
    ```bash
    git clone https://github.com/kabakadev/trivia_app.git
@@ -59,17 +60,17 @@ The Trivia CLI Application is an interactive command-line tool designed for crea
 
 2. **cd into the directory**:
 
+After the cloning is complete, there should ba a new directory, you can go into it by:
+
 ```bash
   cd trivia_app
 ```
 
 3. **Install Dependencies**:
-
    This project does not have external dependencies outside the Python standard library. Ensure you have Python 3.8+ installed.
    You can use pip to target the exact version of the current python used in this project which is Python 3.8.13 or installing the latest version of python from the python.org website.
 
 4. **Run the Application**:
-
    Run the following command to start the program:
 
    ```bash
@@ -80,7 +81,7 @@ The Trivia CLI Application is an interactive command-line tool designed for crea
 
 ## Usage
 
-### Login Process
+### Basic overview(goes indepth in the later sections)
 
 1. Upon starting the application, you will see a list of existing users along with their roles (Admin/Regular User).
 2. Choose to either log in with an existing username, create a new account, or exit the program.
@@ -169,7 +170,7 @@ This project is licensed under the MIT License. See below for details:
 
 MIT License
 
-Copyright (c) [2024] Ian Kabaka
+Copyright (c) 2024 Ian Kabaka
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
