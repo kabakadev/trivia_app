@@ -47,7 +47,7 @@ The Trivia CLI Application is an interactive command-line tool designed for crea
 ### Prerequisites
 
 - Python 3.7+
-- SQLite3 installed on your system, this comes standard with a python installation.
+- SQLite3, this comes standard with the current python version above or the latest python installation .
 
 ### Installation Steps
 
@@ -68,23 +68,15 @@ The Trivia CLI Application is an interactive command-line tool designed for crea
    This project does not have external dependencies outside the Python standard library. Ensure you have Python 3.8+ installed.
    You can use pip to target the exact version of the current python used in this project which is Python 3.8.13 or installing the latest version of python from the python.org website.
 
-4. **Set Up the Database**:
+4. **Run the Application**:
 
-   Run the following command to create the necessary database tables:
+   Run the following command to start the program:
 
    ```bash
    python main.py
    ```
 
    The program will automatically create all required tables.
-
-5. **Run the Application**:
-   Start the program by running:
-   ```bash
-   python main.py
-   ```
-
----
 
 ## Usage
 
@@ -130,15 +122,14 @@ however if they choose to type a question, they will be prompted for the options
 
 each question by convention can only have one answer but this is for the admin to decide, the options are limited to four for each question
 
-- **1. Delete Question**: Fetches all questions and enables the admin to delete a specific question by its ID.The admin can type 0 to cancel this process.
-
-The ID of the question is the number that appears before the semicolon(:) e.g 1:Which is the most fastest car in the world? (1) will be the ID of that question.
-
-if the admin picks it, he/she will be prompted again and can type 'yes' or 'no' to confirm that action, if they type yes, then the question will be deleted, if they type no then they will go back to the main menu
+- **1. Delete Question**: Fetches all questions and enables the admin to delete a specific question by its ID.The admin can type 0 to cancel this process. - The ID of the question is the number that appears before the semicolon(:) e.g 1:Which is the most fastest car in the world? (1) will be the ID of that question. - if the admin picks it, he/she will be prompted again and can type 'yes' or 'no' to confirm that action, if they type yes, then the question will be deleted, if they type no then they will go back to the main menu
 
 - **2. View All Questions**: Displays all questions in the database, including their multiple-choice answers.After the questions are shown, they will be automatically be taken back to the main menu.
 
-- **3. Play Trivia**: Allows the admin to play the trivia game..When user answers each question which is turn based, they willl get feedback wether the answer they gave is correct or false, answering the question is by
+- **3. Play Trivia**: Allows the admin to play the trivia game.
+
+  - When user answers each question which is turn based, they willl get feedback wether the answer they gave is correct or false, answering the question is by number based, the user can select the answer by entering a number (1-4 ) each number corresponding to the option being chosen.
+
 - **4. Logout**: Logs out the current admin and returns to the login/registration prompt.
 - **5. Exit**: Exits the program.
 
@@ -147,9 +138,7 @@ if the admin picks it, he/she will be prompted again and can type 'yes' or 'no' 
 In here a regular user can choose any of the numbers displayed before each menu to select the menu optons
 
 - **0. View All Questions**: Displays all questions in the database, including their multiple-choice answers.
-- **1. Play Trivia**: Starts the trivia game for the user to answer questions and track their score.
-
-When user answers each question which is turn based, they willl get feedback wether the answer they gave is correct or false, answering the question is by number based, the user can select the answer by entering a number (1-4 ) each number corresponding to the option being chosen.
+- **1. Play Trivia**: Starts the trivia game for the user to answer questions and track their score. - When user answers each question which is turn based, they willl get feedback wether the answer they gave is correct or false, answering the question is by number based, the user can select the answer by entering a number (1-4 ) each number corresponding to the option being chosen.
 
 - **2. Logout**: Logs out the current user and returns to the login/registration prompt.
 - **3. Exit**: Exits the program.
@@ -183,5 +172,3 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ---
-
-Enjoy building and playing your trivia games!
