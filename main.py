@@ -23,8 +23,10 @@ def login():
             for user in users:
                 status = "Admin" if user.is_admin else "Regular"
                 print(f"-{user.username} ({status})")
-        
-        username = input("Enter your username: ").strip()
+        username = input("Enter your username (or 'q' to exit): ").strip()
+        if username == 'q':
+            print("Exiting the login section, feel free to come back later")
+            exit()
         user = User.get_user_by_username(username)
         if user:
             print(f"Welcome back {user.username}! please explore the options below")
