@@ -2,7 +2,16 @@ from db.models.questions import Question
 from db.models.choices import Choice
 from db.models.user_answers import UserAnswer
 
+from rich.console import Console
+from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn
+from rich.panel import Panel
+from rich.prompt import IntPrompt
+from rich.prompt import Table
+import time
+
+console = Console()
 def get_user_choice(options):
+    
     print("\nPlease choose an option:")
     for index, option in enumerate(options):
         print(f"{index}. {option}")
@@ -123,9 +132,11 @@ def view_all_questions():
         print("-" * 20)
 
 def play_trivia(current_user_id):
+    console.print(Panel("[bold magenta] Let's Play tribia![/bold magenta]",style="blue"))
     print("\nLet's play trivia! \n")
 
     categories = Question.get_all_categories()
+    console.print("[bold cyan]Choose a category:[/bold cyan]")
     if not categories:
         print("No categories available. Please add questions first.")
         return
