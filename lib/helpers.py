@@ -161,9 +161,7 @@ def play_trivia(current_user_id):
         except ValueError:
             print("Invalid input please enter a number.")
     questions = questions[:num_questions]
-    if not questions:
-        print("No questions available for trivia. which is weird, I will look into it.")
-        return
+    print(f"\nStarting trivia with {num_questions} question(s) from the category: {selected_category}\n")
     score = 0
     for question in questions:
         print(f"Question: {question.question_text}")
