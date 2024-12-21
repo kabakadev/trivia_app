@@ -35,7 +35,7 @@ def create_questions(admin_user_id):
             print("1. View next 10 categories")
             print("2. View all categories")
             print("3. Skip viewing categories")
-            choice = input("Enter your choice: ").strip()
+            choice = input("Pick an option from above or enter 3 to skip viewing categories: ").strip()
 
             if choice == "1":
                 for i in range(5, len(categories),10):

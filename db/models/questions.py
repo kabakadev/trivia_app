@@ -77,7 +77,7 @@ class Question:
             rows = CURSOR.execute(sql).fetchall()
             questions = []
             for row in rows:
-                question = cls(row[1], int(row[2]))  
+                question = cls(row[1], int(row[2]), row[3])  
                 question._question_id = row[0]  
                 questions.append(question)
             
