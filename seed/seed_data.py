@@ -36,7 +36,7 @@ def seed_questions():
             for choice_data in data["choices"]:
                 existing_choice = Choice.get_choices_by_question_id(question.question_id)
                 if not any(c.choice_text == choice_data["text"] for c in existing_choice):
-                    choice = Choice(choice_data["text"],question.question_id,choice_data["is_correct"])
+                    choice = Choice(question.question_id,choice_data["text"],choice_data["is_correct"])
                     choice.save()
                     print(f" Added choice: {choice_data['text']}")
                 else:
