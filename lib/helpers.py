@@ -160,7 +160,7 @@ def play_trivia(current_user_id):
                 print(f"Plase enter a number between 1 and {max_questions}")
         except ValueError:
             print("Invalid input please enter a number.")
-    questions = Question.get_all_questions()
+    questions = questions[:num_questions]
     if not questions:
         print("No questions available for trivia. which is weird, I will look into it.")
         return
