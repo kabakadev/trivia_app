@@ -2,6 +2,7 @@ from db.models.questions import Question
 from db.models.choices import Choice
 from db.models.user_answers import UserAnswer
 from db.models.users import User
+from seed.seed_data import seed_questions
 
 from lib.helpers import (
     get_user_choice,
@@ -13,6 +14,11 @@ from lib.helpers import (
 
 def create_tables():
 
+
+    User.drop_table()
+    Question.drop_table()
+    UserAnswer.drop_table()
+    Choice.drop_table() 
 
     User.create_table()
     Question.create_table()
@@ -122,6 +128,7 @@ def main_menu(current_user):
         
 if __name__ == "__main__":
     create_tables() 
+    seed_questions()
     check_user_priviledges()
     while True:
         current_user = login()

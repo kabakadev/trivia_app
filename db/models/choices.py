@@ -79,8 +79,8 @@ class Choice:
                     choice = cls(row[1], row[2], bool(row[3])) 
                     choice._choice_id = row[0]
                     choices.append(choice)
-                return choices
-            return None
+            return choices
+    
     @classmethod
     def get_choice_by_id(cls, choice_id):
         with get_db_connection() as CONN:

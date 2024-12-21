@@ -1,7 +1,7 @@
 
 from db import get_db_connection
 class Question:
-    def __init__(self,question_text,created_by,category=""):
+    def __init__(self,question_text,created_by,category):
         self._question_id = None
         self.question_text = question_text
         self.created_by = created_by
