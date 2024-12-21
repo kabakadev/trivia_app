@@ -133,6 +133,20 @@ def play_trivia(current_user_id):
     for index,category in enumerate(categories,start=1):
         print(f"{index}. {category}")
     print("0. Exit to main menu")
+
+    while True:
+        try:
+            category_choice = int(input("Select a category by number (or 0 to exit): "))
+            if category_choice == 0:
+                return
+            if 1 <= category_choice <= len(categories):
+                selected_category = categories[category_choice -1]
+                break
+            else:
+                print("Invalid choice. Please select a valid category")
+        except ValueError:
+            print("Invalid input. please enter a number")
+            
     questions = Question.get_all_questions()
     if not questions:
         print("No questions available for trivia. which is weird, I will look into it.")
