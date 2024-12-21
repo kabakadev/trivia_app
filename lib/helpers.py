@@ -150,6 +150,16 @@ def play_trivia(current_user_id):
     if not questions:
         print(f"No questions available in this category:{selected_category}")
         return
+    max_questions =len(questions)
+    while True:
+        try:
+            num_questions = int(input(f"How many questions would you like to answer? (1 -{max_questions}): "))
+            if 1 <= num_questions <= max_questions:
+                break
+            else:
+                print(f"Plase enter a number between 1 and {max_questions}")
+        except ValueError:
+            print("Invalid input please enter a number.")
     questions = Question.get_all_questions()
     if not questions:
         print("No questions available for trivia. which is weird, I will look into it.")
