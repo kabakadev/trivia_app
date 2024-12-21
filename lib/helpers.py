@@ -124,6 +124,15 @@ def view_all_questions():
 
 def play_trivia(current_user_id):
     print("\nLet's play trivia! \n")
+
+    categories = Question.get_all_categories()
+    if not categories:
+        print("No categories available. Please add questions first.")
+        return
+    print("\nAvailable categories:")
+    for index,category in enumerate(categories,start=1):
+        print(f"{index}. {category}")
+    print("0. Exit to main menu")
     questions = Question.get_all_questions()
     if not questions:
         print("No questions available for trivia. which is weird, I will look into it.")
