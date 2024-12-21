@@ -14,12 +14,6 @@ from lib.helpers import (
 
 def create_tables():
 
-
-    User.drop_table()
-    Question.drop_table()
-    UserAnswer.drop_table()
-    Choice.drop_table() 
-
     User.create_table()
     Question.create_table()
     UserAnswer.create_table()
