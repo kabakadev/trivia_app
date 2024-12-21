@@ -1,6 +1,7 @@
 from db.models.questions import Question
 from db.models.choices import Choice
 from db.models.user_answers import UserAnswer
+
 def get_user_choice(options):
     print("\nPlease choose an option:")
     for index, option in enumerate(options):
