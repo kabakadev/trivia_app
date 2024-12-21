@@ -26,9 +26,37 @@ def create_questions(admin_user_id):
         print("You can try again, going back to the main menu...")
         return
     categories = Question.get_all_categories()
+    if categories:
+        print("\nHere are the top 5 categories:")
+        for i,category in enumerate(categories[:5],start=1):
+            print(f"{i}.{category}")
+        while True:
+            print("\nOptions:")
+            print("1. View next 10 categories")
+            print("2. View all categories")
+            print("3. Skip viewing categories")
+            choice = input("Enter your choice: ").strip()
+
+            if choice == "1":
+                for i in range(5, len(categories),10):
+                    print("\nNext 10 categories:")
+                    for category in categories[i:i+10]:
+                        print(f"- {category}")
+                    cont = input("View more? (yes/no): ").strip().lower()
+                    if cont != "yes":
+                        break
+            elif choice == "2":
+                print("\nAll categories")
+                for category in categories:
+                    print(f" - {category}")
+                break
+            elif choice == "3":
+                break
+            else:
+                print("Invalid choice try again")
     category = input("Enter the category for this question: ").strip()
     if not category:
-        print("Category cannot be left blank")
+        print("Category cannot be left blank. please try again")
         return create_questions(admin_user_id) #recursion nice!
     
     
