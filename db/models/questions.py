@@ -62,6 +62,14 @@ class Question:
                 """
                 CURSOR.execute(sql, (self.question_text, self.created_by,self.category, self._question_id))
     @classmethod
+    def get_all_categories(cls):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = "SELECT DISTINCT category FROM questions ORDER BY category ASC"
+            CURSOR.execute(sql)
+            categories =[row[0] for row in CURSOR.fetchall()]
+            return categories
+    @classmethod
     def get_all_questions(cls):
         with get_db_connection() as CONN:
             CURSOR = CONN.cursor()

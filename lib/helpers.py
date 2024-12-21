@@ -25,7 +25,14 @@ def create_questions(admin_user_id):
     if question_text == '0':
         print("You can try again, going back to the main menu...")
         return
-    question = Question(question_text, admin_user_id)
+    categories = Question.get_all_categories()
+    category = input("Enter the category for this question: ").strip()
+    if not category:
+        print("Category cannot be left blank")
+        return create_questions(admin_user_id) #recursion nice!
+    
+    
+    question = Question(question_text, admin_user_id,category)
     question.save()
 
     print("Now, let's add multiple-choice options for this question")
