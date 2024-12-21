@@ -146,7 +146,10 @@ def play_trivia(current_user_id):
                 print("Invalid choice. Please select a valid category")
         except ValueError:
             print("Invalid input. please enter a number")
-            
+    questions = Question.get_questions_by_category(selected_category)
+    if not questions:
+        print(f"No questions available in this category:{selected_category}")
+        return
     questions = Question.get_all_questions()
     if not questions:
         print("No questions available for trivia. which is weird, I will look into it.")
