@@ -76,8 +76,8 @@ def login():
 
 
 
-def main_menu():
-    current_user = None
+def main_menu(current_user):
+ 
 
     while True:
         print(Fore.YELLOW + "\nWelcome to the Trivia App!" + Style.RESET_ALL)
@@ -116,7 +116,7 @@ def main_menu():
         except ValueError:
             print(Fore.RED + "Invalid input. Please enter a number." + Style.RESET_ALL)
 
-    # Proceed to the main menu for logged-in users
+
     while True:
         print(Fore.CYAN + f"\nUser: {current_user['username']}  |  Admin Status: {current_user['is_admin']}" + Style.RESET_ALL)
         print(Fore.YELLOW + "\nMain Menu:" + Style.RESET_ALL)
