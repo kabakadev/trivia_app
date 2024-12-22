@@ -23,7 +23,7 @@ class User:
     @password.setter
     def password(self,password):
         if isinstance(password,str):
-            self._username = password
+            self._password = password
         else:
             raise ValueError("password must be a string")
     @property
