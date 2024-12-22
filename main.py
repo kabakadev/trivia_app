@@ -58,22 +58,6 @@ def login():
                 print("Retrying login...")
 
 
-def check_user_priviledges():
-    if len(User.get_all_users()) == 0:
-        print("No users found here, we need atleast one admin account")
-        username = input("Enter a username for the admin:") 
-        while True:
-            is_admin = input("This user has to be an amdin type: (yes)").lower()
-            if is_admin in ["yes"]:
-                is_truly_admin = is_admin == "yes"
-                break
-            else:
-                print("Invalid input. Please enter 'yes'")
-        admin_user = User(username,is_truly_admin)
-        admin_user.save()
-        print(f"Admin User '{username}' has been created successfully")
-
-from colorama import Fore, Style
 
 # def main_menu(current_user):
 #     while True:
@@ -275,7 +259,6 @@ def main_menu():
 if __name__ == "__main__":
     create_tables()
     seed_questions()
-    check_user_priviledges()
     while True:
         current_user = login()
         if current_user:

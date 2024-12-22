@@ -1,8 +1,9 @@
 from db import get_db_connection
 class User:
-    def __init__(self,username,is_admin):
+    def __init__(self,username,password, is_admin):
         self._user_id = None
         self.username = username
+        self.password = password
         self.is_admin = is_admin
     @property
     def user_id(self):
@@ -16,6 +17,15 @@ class User:
             self._username = username
         else:
             raise ValueError("username must be a string")
+    @property
+    def password(self):
+        return self._password
+    @password.setter
+    def password(self,password):
+        if isinstance(password,str):
+            self._username = password
+        else:
+            raise ValueError("password must be a string")
     @property
     def is_admin(self):
         return self._is_admin
@@ -46,9 +56,9 @@ class User:
                 raise ValueError(f"username '{self.username}' exists already.")
             if self._user_id is None:
                 sql = """
-                    INSERT INTO users (username, is_admin) VALUES (?, ?)
+                    INSERT INTO users (username,password, is_admin) VALUES (?, ?)
                 """
-                CURSOR.execute(sql, (self.username, int(self.is_admin)))
+                CURSOR.execute(sql, (self.username, self.password, int(self.is_admin)))
                 self._user_id = CURSOR.lastrowid
             else:
                 sql = """
@@ -64,7 +74,7 @@ class User:
             rows = CURSOR.execute(sql).fetchall()
             users = []
             for row in rows:
-                user = cls(row[1], bool(row[2]))  
+                user = cls(row[1],row[2], bool(row[3]))  
                 user._user_id = row[0]  
                 users.append(user)
             
@@ -83,7 +93,7 @@ class User:
                 """
             row = CURSOR.execute(sql,(user_id,)).fetchone()
             if row:
-                user = cls(row[1], bool(row[2])) 
+                user = cls(row[1],row[2], bool(row[3])) 
                 user._user_id = row[0] 
                 return user
         return None 
@@ -99,7 +109,7 @@ class User:
                     """ 
             row = CURSOR.execute(sql,(username,)).fetchone()
             if row:
-                user = cls(row[1],bool(row[2]))
+                user = cls(row[1],row[2], bool(row[2]))
                 user._user_id = row[0]
                 return user
             return None
