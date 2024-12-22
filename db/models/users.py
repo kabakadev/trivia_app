@@ -56,15 +56,15 @@ class User:
                 raise ValueError(f"username '{self.username}' exists already.")
             if self._user_id is None:
                 sql = """
-                    INSERT INTO users (username,password, is_admin) VALUES (?, ?)
+                    INSERT INTO users (username,password, is_admin) VALUES (?, ?, ?)
                 """
                 CURSOR.execute(sql, (self.username, self.password, int(self.is_admin)))
                 self._user_id = CURSOR.lastrowid
             else:
                 sql = """
-                    UPDATE users SET username = ?, is_admin = ? WHERE user_id = ?
+                    UPDATE users SET username = ?,password = ?, is_admin = ? WHERE user_id = ?
                 """
-                CURSOR.execute(sql, (self.username, self.is_admin, self._user_id))
+                CURSOR.execute(sql, (self.username, self.password, self.is_admin, self._user_id))
     
     @classmethod
     def get_all_users(cls):

@@ -64,6 +64,7 @@ def login():
                 is_admin = is_admin == 'yes'  # Convert to True/False
                 password = input("Enter a password for the new account: ").strip()
                 hashed_password = hash_password(password)  # Hash the password
+                print(hashed_password)
 
                 new_user = User(username=username, password=hashed_password, is_admin=is_admin)
                 new_user.save()
