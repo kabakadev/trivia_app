@@ -9,7 +9,7 @@ from auth import register_user, verify_password,hash_password
 from colorama import Fore, Style
 
 from lib.helpers import (
-    get_user_choice,
+   
     create_questions,
     delete_questions,
     view_all_questions,
@@ -76,9 +76,9 @@ def login():
 
 
 
-def main_menu(current_user):
+def main_menu(current_user_log):
  
-
+ 
     while True:
         print(Fore.YELLOW + "\nWelcome to the Trivia App!" + Style.RESET_ALL)
         print(Fore.GREEN + "1. Register a New User" + Style.RESET_ALL)
@@ -146,13 +146,13 @@ def main_menu(current_user):
 
             if current_user['is_admin']:
                 if choice == 0:
-                    print("Admin functionality: Add New Question")  # Replace with your function
+                    create_questions()
                 elif choice == 1:
-                    print("Admin functionality: Delete Question")  # Replace with your function
+                    delete_questions()
                 elif choice == 2:
-                    print("View All Questions")  # Replace with your function
+                    view_all_questions()
                 elif choice == 3:
-                    print("Play Trivia")  # Replace with your function
+                   play_trivia(current_user_log.user_id)
                 elif choice == 4:
                     print(Fore.MAGENTA + f"\nLogging you out! Goodbye, {current_user['username']}." + Style.RESET_ALL)
                     return
@@ -163,9 +163,9 @@ def main_menu(current_user):
                     print(Fore.RED + "\nInvalid choice. Please try again." + Style.RESET_ALL)
             else:
                 if choice == 0:
-                    print("View All Questions")  # Replace with your function
+                    view_all_questions()
                 elif choice == 1:
-                    print("Play Trivia")  # Replace with your function
+                   play_trivia(current_user_log.user_id)
                 elif choice == 2:
                     print(Fore.MAGENTA + f"\nLogging you out! Goodbye, {current_user['username']}." + Style.RESET_ALL)
                     return
@@ -183,8 +183,8 @@ if __name__ == "__main__":
     create_tables()
     seed_questions()
     while True:
-        current_user = login()
-        if current_user:
-            main_menu(current_user)
+        current_user_log = login()
+        if current_user_log:
+            main_menu(current_user_log)
         else:
             break

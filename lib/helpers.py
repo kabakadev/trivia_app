@@ -1,29 +1,7 @@
 from db.models.questions import Question
 from db.models.choices import Choice
 from db.models.user_answers import UserAnswer
-
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn
-from rich.panel import Panel
-from rich.prompt import IntPrompt
-from rich.table import Table
-import time
-
-
-def get_user_choice(options):
-    
-    print("\nPlease choose an option:")
-    for index, option in enumerate(options):
-        print(f"{index}. {option}")
-    while True:
-        try:
-            choice = int(input("Enter the number corresponding to your choice: "))
-            if 0 <= choice < len(options):
-                return choice
-            else:
-                print(f"Invalid choice. Please enter a number between 0 and {len(options) - 1}.")
-        except ValueError:
-            print("Invalid input. Please enter a number.")
 
 def create_questions(admin_user_id):
     print('\nAdd a new question')
