@@ -3,7 +3,7 @@ from db.models.choices import Choice
 from db.models.user_answers import UserAnswer
 from db.models.users import User
 from seed.seed_data import seed_questions
-
+from auth import register_user, verify_password
 from lib.helpers import (
     get_user_choice,
     create_questions,
@@ -14,6 +14,10 @@ from lib.helpers import (
 
 def create_tables():
 
+    User.drop_table()
+    Question.drop_table()
+    UserAnswer.drop_table()
+    Choice.drop_table() 
     User.create_table()
     Question.create_table()
     UserAnswer.create_table()
@@ -71,12 +75,146 @@ def check_user_priviledges():
 
 from colorama import Fore, Style
 
-def main_menu(current_user):
+# def main_menu(current_user):
+#     while True:
+#         print(Fore.YELLOW + "\nWelcome to the Trivia App Authentication Test!" + Style.RESET_ALL)
+#         print(Fore.GREEN + "1. Register a New User" + Style.RESET_ALL)
+#         print(Fore.GREEN + "2. Log In" + Style.RESET_ALL)
+#         print(Fore.GREEN + "3. Exit" + Style.RESET_ALL)
+
+#         try:
+#             choice = int(input(Fore.BLUE + "\nEnter your choice: " + Style.RESET_ALL))
+
+#             if choice == 1:
+#                 username = input(Fore.BLUE + "Enter a username: " + Style.RESET_ALL)
+#                 password = input(Fore.BLUE + "Enter a password: " + Style.RESET_ALL)
+#                 register_user(username, password)
+
+#             elif choice == 2:
+#                 username = input(Fore.BLUE + "Enter your username: " + Style.RESET_ALL)
+#                 password = input(Fore.BLUE + "Enter your password: " + Style.RESET_ALL)
+#                 if verify_password(username, password):
+#                     print(Fore.GREEN + "Login successful! Welcome to the app." + Style.RESET_ALL)
+#                 else:
+#                     print(Fore.RED + "Login failed. Incorrect username or password." + Style.RESET_ALL)
+
+#             elif choice == 3:
+#                 print(Fore.MAGENTA + "Exiting the app. Goodbye!" + Style.RESET_ALL)
+#                 break
+
+#             else:
+#                 print(Fore.RED + "Invalid choice. Please select a valid option." + Style.RESET_ALL)
+
+#         except ValueError:
+#             print(Fore.RED + "Invalid input. Please enter a number." + Style.RESET_ALL)
+#         # print(Fore.CYAN + f"\nUser: {current_user.username}  |  Admin Status: {current_user.is_admin}" + Style.RESET_ALL)
+#         # print(Fore.YELLOW + "\nMain Menu:" + Style.RESET_ALL)
+
+#         if current_user.is_admin:
+#             options = [
+#                 "Add New Question",
+#                 "Delete Question",
+#                 "View All Questions",
+#                 "Play Trivia",
+#                 "Logout",
+#                 "Exit",
+#             ]
+#         else:
+#             options = [
+#                 "View All Questions",
+#                 "Play Trivia",
+#                 "Logout",
+#                 "Exit",
+#             ]
+
+#         for i, option in enumerate(options):
+#             print(Fore.GREEN + f"{i}. {option}" + Style.RESET_ALL)
+
+#         try:
+#             choice = int(input(Fore.BLUE + "\nEnter the number corresponding to your choice: " + Style.RESET_ALL))
+
+#             if current_user.is_admin:
+#                 if choice == 0:
+#                     create_questions(current_user.user_id)
+#                 elif choice == 1:
+#                     delete_questions()
+#                 elif choice == 2:
+#                     view_all_questions()
+#                 elif choice == 3:
+#                     play_trivia(current_user.user_id)
+#                 elif choice == 4:
+#                     print(Fore.MAGENTA + f"\nLogging you out! Goodbye, {current_user.username}." + Style.RESET_ALL)
+#                     return
+#                 elif choice == 5:
+#                     print(Fore.RED + "\nExiting Trivia App." + Style.RESET_ALL)
+#                     exit()
+#                 else:
+#                     print(Fore.RED + "\nInvalid choice. Please try again." + Style.RESET_ALL)
+#             else:
+#                 if choice == 0:
+#                     view_all_questions()
+#                 elif choice == 1:
+#                     play_trivia(current_user.user_id)
+#                 elif choice == 2:
+#                     print(Fore.MAGENTA + f"\nLogging you out! Goodbye, {current_user.username}." + Style.RESET_ALL)
+#                     return
+#                 elif choice == 3:
+#                     print(Fore.RED + "\nExiting Trivia App." + Style.RESET_ALL)
+#                     exit()
+#                 else:
+#                     print(Fore.RED + "\nInvalid choice. Please try again." + Style.RESET_ALL)
+
+#         except ValueError:
+#             print(Fore.RED + "\nInvalid input. Please enter a number." + Style.RESET_ALL)
+from auth import register_user, verify_password
+from colorama import Fore, Style
+
+def main_menu():
+    current_user = None
+
     while True:
-        print(Fore.CYAN + f"\nUser: {current_user.username}  |  Admin Status: {current_user.is_admin}" + Style.RESET_ALL)
+        print(Fore.YELLOW + "\nWelcome to the Trivia App!" + Style.RESET_ALL)
+        print(Fore.GREEN + "1. Register a New User" + Style.RESET_ALL)
+        print(Fore.GREEN + "2. Log In" + Style.RESET_ALL)
+        print(Fore.GREEN + "3. Exit" + Style.RESET_ALL)
+
+        try:
+            choice = int(input(Fore.BLUE + "\nEnter your choice: " + Style.RESET_ALL))
+
+            if choice == 1:
+                # Registration
+                username = input(Fore.BLUE + "Enter a username: " + Style.RESET_ALL)
+                password = input(Fore.BLUE + "Enter a password: " + Style.RESET_ALL)
+                register_user(username, password)
+
+            elif choice == 2:
+                # Login
+                username = input(Fore.BLUE + "Enter your username: " + Style.RESET_ALL)
+                password = input(Fore.BLUE + "Enter your password: " + Style.RESET_ALL)
+                if verify_password(username, password):
+                    print(Fore.GREEN + f"Login successful! Welcome, {username}!" + Style.RESET_ALL)
+                    current_user = {"username": username, "is_admin": username == "admin"}  # Example admin logic
+                    break
+                else:
+                    print(Fore.RED + "Login failed. Incorrect username or password." + Style.RESET_ALL)
+
+            elif choice == 3:
+                # Exit
+                print(Fore.MAGENTA + "Exiting the app. Goodbye!" + Style.RESET_ALL)
+                return
+
+            else:
+                print(Fore.RED + "Invalid choice. Please select a valid option." + Style.RESET_ALL)
+
+        except ValueError:
+            print(Fore.RED + "Invalid input. Please enter a number." + Style.RESET_ALL)
+
+    # Proceed to the main menu for logged-in users
+    while True:
+        print(Fore.CYAN + f"\nUser: {current_user['username']}  |  Admin Status: {current_user['is_admin']}" + Style.RESET_ALL)
         print(Fore.YELLOW + "\nMain Menu:" + Style.RESET_ALL)
 
-        if current_user.is_admin:
+        if current_user['is_admin']:
             options = [
                 "Add New Question",
                 "Delete Question",
@@ -99,17 +237,17 @@ def main_menu(current_user):
         try:
             choice = int(input(Fore.BLUE + "\nEnter the number corresponding to your choice: " + Style.RESET_ALL))
 
-            if current_user.is_admin:
+            if current_user['is_admin']:
                 if choice == 0:
-                    create_questions(current_user.user_id)
+                    print("Admin functionality: Add New Question")  # Replace with your function
                 elif choice == 1:
-                    delete_questions()
+                    print("Admin functionality: Delete Question")  # Replace with your function
                 elif choice == 2:
-                    view_all_questions()
+                    print("View All Questions")  # Replace with your function
                 elif choice == 3:
-                    play_trivia(current_user.user_id)
+                    print("Play Trivia")  # Replace with your function
                 elif choice == 4:
-                    print(Fore.MAGENTA + f"\nLogging you out! Goodbye, {current_user.username}." + Style.RESET_ALL)
+                    print(Fore.MAGENTA + f"\nLogging you out! Goodbye, {current_user['username']}." + Style.RESET_ALL)
                     return
                 elif choice == 5:
                     print(Fore.RED + "\nExiting Trivia App." + Style.RESET_ALL)
@@ -118,11 +256,11 @@ def main_menu(current_user):
                     print(Fore.RED + "\nInvalid choice. Please try again." + Style.RESET_ALL)
             else:
                 if choice == 0:
-                    view_all_questions()
+                    print("View All Questions")  # Replace with your function
                 elif choice == 1:
-                    play_trivia(current_user.user_id)
+                    print("Play Trivia")  # Replace with your function
                 elif choice == 2:
-                    print(Fore.MAGENTA + f"\nLogging you out! Goodbye, {current_user.username}." + Style.RESET_ALL)
+                    print(Fore.MAGENTA + f"\nLogging you out! Goodbye, {current_user['username']}." + Style.RESET_ALL)
                     return
                 elif choice == 3:
                     print(Fore.RED + "\nExiting Trivia App." + Style.RESET_ALL)
