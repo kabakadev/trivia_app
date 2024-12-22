@@ -69,59 +69,73 @@ def check_user_priviledges():
         admin_user.save()
         print(f"Admin User '{username}' has been created successfully")
 
+from colorama import Fore, Style
+
 def main_menu(current_user):
     while True:
-        print(f"User:{current_user.username} Admin status:{current_user.is_admin}") 
-        options= []
+        print(Fore.CYAN + f"\nUser: {current_user.username}  |  Admin Status: {current_user.is_admin}" + Style.RESET_ALL)
+        print(Fore.YELLOW + "\nMain Menu:" + Style.RESET_ALL)
+
         if current_user.is_admin:
-            print("Hello admin\n")
             options = [
                 "Add New Question",
                 "Delete Question",
                 "View All Questions",
                 "Play Trivia",
                 "Logout",
-                "Exit"
-                ]
+                "Exit",
+            ]
         else:
-            print("Hello regular user\n")
             options = [
                 "View All Questions",
                 "Play Trivia",
                 "Logout",
-                "Exit"
-               ]
-        
-        choice = get_user_choice(options)
-        if current_user.is_admin:
-            if choice == 0:
-                create_questions(current_user.user_id) 
-            elif choice == 1:
-                delete_questions()
-            elif choice == 2:
-                view_all_questions()
-            elif choice == 3:
-                play_trivia(current_user.user_id)
-            elif choice == 4:
-                print(f"Logging you out! godbye {current_user.username}")
-                return
-            elif choice == 5:
-                print("Exiting Trivia App.")
-                exit()
-        else:
-            if choice == 0:
-                view_all_questions()
-            elif choice == 1:
-                play_trivia(current_user.user_id)
-            elif choice == 2:
-                print(f"Logging you out! godbye {current_user.username}")
-                return
-            elif choice == 3:
-                print("Exiting Trivia App.")
-                exit()
-        
+                "Exit",
+            ]
+
+        for i, option in enumerate(options):
+            print(Fore.GREEN + f"{i}. {option}" + Style.RESET_ALL)
+
+        try:
+            choice = int(input(Fore.BLUE + "\nEnter the number corresponding to your choice: " + Style.RESET_ALL))
+
+            if current_user.is_admin:
+                if choice == 0:
+                    create_questions(current_user.user_id)
+                elif choice == 1:
+                    delete_questions()
+                elif choice == 2:
+                    view_all_questions()
+                elif choice == 3:
+                    play_trivia(current_user.user_id)
+                elif choice == 4:
+                    print(Fore.MAGENTA + f"\nLogging you out! Goodbye, {current_user.username}." + Style.RESET_ALL)
+                    return
+                elif choice == 5:
+                    print(Fore.RED + "\nExiting Trivia App." + Style.RESET_ALL)
+                    exit()
+                else:
+                    print(Fore.RED + "\nInvalid choice. Please try again." + Style.RESET_ALL)
+            else:
+                if choice == 0:
+                    view_all_questions()
+                elif choice == 1:
+                    play_trivia(current_user.user_id)
+                elif choice == 2:
+                    print(Fore.MAGENTA + f"\nLogging you out! Goodbye, {current_user.username}." + Style.RESET_ALL)
+                    return
+                elif choice == 3:
+                    print(Fore.RED + "\nExiting Trivia App." + Style.RESET_ALL)
+                    exit()
+                else:
+                    print(Fore.RED + "\nInvalid choice. Please try again." + Style.RESET_ALL)
+
+        except ValueError:
+            print(Fore.RED + "\nInvalid input. Please enter a number." + Style.RESET_ALL)
+
+
 if __name__ == "__main__":
-    create_tables() 
+    create_tables()
     seed_questions()
     check_user_priviledges()
     while True:

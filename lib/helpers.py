@@ -9,7 +9,7 @@ from rich.prompt import IntPrompt
 from rich.table import Table
 import time
 
-console = Console()
+
 def get_user_choice(options):
     
     print("\nPlease choose an option:")
@@ -130,106 +130,156 @@ def view_all_questions():
         else:
             print("   No choices available for this question which is weird, each question must contain choices")
         print("-" * 20)
-
-
-
-#refactored code to use timers and colors
 console = Console()
 
+# def play_trivia(current_user_id):
+#     console.print(Panel("[bold magenta] Let's Play tribia![/bold magenta]",style="blue"))
+
+#     categories = Question.get_all_categories()
+#     console.print("[bold cyan]Choose a category:[/bold cyan]")
+#     if not categories:
+#         print("No categories available. Please add questions first.")
+#         return
+#     print("\nAvailable categories:")
+#     for index,category in enumerate(categories,start=1):
+#         print(f"[bold yellow]{index}. {category}[/bold yellow]")
+#     print("0. Exit to main menu")
+
+#     while True:
+#         try:
+#             category_choice = int(input("Select a category by number (or 0 to exit): "))
+#             if category_choice == 0:
+#                 return
+#             if 1 <= category_choice <= len(categories):
+#                 selected_category = categories[category_choice -1]
+#                 break
+#             else:
+#                 print("Invalid choice. Please select a valid category")
+#         except ValueError:
+#             print("Invalid input. please enter a number")
+#     questions = Question.get_questions_by_category(selected_category)
+#     if not questions:
+#         print(f"No questions available in this category:{selected_category}")
+#         return
+#     max_questions =len(questions)
+#     while True:
+#         try:
+#             num_questions = int(input(f"How many questions would you like to answer? (1 -{max_questions}): "))
+#             if 1 <= num_questions <= max_questions:
+#                 break
+#             else:
+#                 print(f"Plase enter a number between 1 and {max_questions}")
+#         except ValueError:
+#             print("Invalid input please enter a number.")
+#     questions = questions[:num_questions]
+#     print(f"\nStarting trivia with {num_questions} question(s) from the category: {selected_category}\n")
+#     score = 0
+#     for question in questions:
+#         print(f"Question: {question.question_text}")
+#         choices = Choice.get_choices_by_question_id(question._question_id)
+#         if not choices:
+#             print("No choices available for this question, which is weird again and should not be happening. skipping...")
+#             continue
+#         for index,choice in enumerate(choices,start=1):
+#             print(f"{index}.{choice.choice_text}")
+#         while True:
+#             try:
+#                 selected_index = int(input("Select Your answer (1-4): ")) -1
+#                 if 0 <= selected_index <len(choices):
+#                     break
+#                 else:
+#                     print("Invalid Choice. please select a valid option")
+#             except ValueError:
+#                 print("Invalid input. Please enter a number")
+#         selected_choice = choices[selected_index]
+
+#         user_answer = UserAnswer(
+#             user_id=current_user_id,
+#             question_id=question._question_id,
+#             choice_id=selected_choice._choice_id
+#         )
+#         user_answer.save()
+
+#         if selected_choice.is_correct:
+#             print("Correct!! ")
+#             score +=1
+#         else:
+#             print("Incorrect, better luck next time!")
+#         print("-" * 20)
+#     print(f"You have completed the trivia! your total score is: {score}/{len(questions)}")
+from colorama import Fore, Style
+
 def play_trivia(current_user_id):
-    console.print(Panel("[bold magenta]Let's play trivia![/bold magenta]", style="blue"))
-    
-    # Get questions by category
+    print(Fore.CYAN + "\nWelcome to the Trivia Game!" + Style.RESET_ALL)
+
     categories = Question.get_all_categories()
-    console.print("[bold cyan]Choose a category:[/bold cyan]")
-    for idx, category in enumerate(categories, start=1):
-        console.print(f"[bold yellow]{idx}. {category}[/bold yellow]")
-    selected_category = IntPrompt.ask(
-        "[bold green]Enter the category number[/bold green]", choices=[str(i) for i in range(1, len(categories) + 1)]
-    )
-    category = categories[selected_category - 1]
-    questions = Question.get_questions_by_category(category)
-    
-    if not questions:
-        console.print("[bold red]No questions available in this category![/bold red]")
+    if not categories:
+        print(Fore.RED + "No categories available. Please add questions first." + Style.RESET_ALL)
         return
-    
-    # Ask how many questions to play
-    max_questions = len(questions)
-    num_questions = IntPrompt.ask(
-        f"[bold green]How many questions would you like to answer? (1-{max_questions})[/bold green]", 
-        choices=[str(i) for i in range(1, max_questions + 1)]
-    )
-    questions = questions[:num_questions]
 
-    # Initialize game
-    score = 0
-    with Progress(
-        SpinnerColumn(),
-        BarColumn(),
-        TextColumn("[bold blue]{task.description}[/bold blue]"),
-        transient=True
-    ) as progress:
-        task = progress.add_task("Starting trivia...", total=len(questions))
-        
-        for question in questions:
-            console.print(
-                Panel(
-                    f"[bold yellow]Question:[/bold yellow] {question.question_text}",
-                    style="blue",
-                )
-            )
-            choices = Choice.get_choices_by_question_id(question._question_id)
-            if not choices:
-                console.print("[bold red]No choices available for this question, skipping...[/bold red]")
-                progress.advance(task)
-                continue
-            
-            # Display choices
-            for idx, choice in enumerate(choices, start=1):
-                console.print(f"[cyan]{idx}. {choice.choice_text}[/cyan]")
-            
-            # Add a countdown timer for urgency
-            countdown_timer(10)  # 10-second timer
-            
-            # Get user input
-            selected_index = IntPrompt.ask(
-                "[bold green]Select your answer (1-4):[/bold green]",
-                choices=[str(i) for i in range(1, len(choices) + 1)]
-            ) - 1
-            selected_choice = choices[selected_index]
+    print(Fore.YELLOW + "\nAvailable Categories:" + Style.RESET_ALL)
+    for idx, category in enumerate(categories, 1):
+        print(Fore.GREEN + f"{idx}. {category}" + Style.RESET_ALL)
+    print(Fore.GREEN + "0. Exit to Main Menu" + Style.RESET_ALL)
 
-            # Save the user's answer
-            user_answer = UserAnswer(
-                user_id=current_user_id,
-                question_id=question._question_id,
-                choice_id=selected_choice._choice_id
-            )
-            user_answer.save()
-
-            # Provide feedback
-            if selected_choice.is_correct:
-                console.print("[bold green]Correct![/bold green] :thumbs_up:")
-                score += 1
+    while True:
+        try:
+            category_choice = int(input(Fore.BLUE + "\nSelect a category by number: " + Style.RESET_ALL))
+            if category_choice == 0:
+                return
+            if 1 <= category_choice <= len(categories):
+                selected_category = categories[category_choice - 1]
+                break
             else:
-                console.print("[bold red]Incorrect! Better luck next time![/bold red] :thumbs_down:")
-            
-            console.print("-" * 20)
-            progress.advance(task)
-    
-    # Display results
-    display_results(score, len(questions))
+                print(Fore.RED + "Invalid choice. Please select a valid category." + Style.RESET_ALL)
+        except ValueError:
+            print(Fore.RED + "Invalid input. Please enter a number." + Style.RESET_ALL)
 
-def countdown_timer(seconds):
-    for i in range(seconds, 0, -1):
-        console.print(f"[bold red]{i}[/bold red] seconds remaining...", end="\r")
-        time.sleep(1)
-    console.print("[bold red]Time's up![/bold red]")
+    questions = Question.get_questions_by_category(selected_category)
+    if not questions:
+        print(Fore.RED + f"No questions available in the category: {selected_category}." + Style.RESET_ALL)
+        return
 
-def display_results(score, total):
-    table = Table(title="Trivia Results", style="green")
-    table.add_column("Score", justify="center", style="bold yellow")
-    table.add_column("Total Questions", justify="center", style="bold cyan")
-    table.add_row(str(score), str(total))
-    console.print(table)
+    while True:
+        try:
+            num_questions = int(input(Fore.BLUE + f"\nHow many questions would you like to answer? (1-{len(questions)}): " + Style.RESET_ALL))
+            if 1 <= num_questions <= len(questions):
+                break
+            else:
+                print(Fore.RED + f"Please enter a number between 1 and {len(questions)}." + Style.RESET_ALL)
+        except ValueError:
+            print(Fore.RED + "Invalid input. Please enter a number." + Style.RESET_ALL)
 
+    score = 0
+    for idx, question in enumerate(questions[:num_questions], 1):
+        print(Fore.YELLOW + f"\nQuestion {idx}/{num_questions}: {question.question_text}" + Style.RESET_ALL)
+        choices = Choice.get_choices_by_question_id(question._question_id)
+        for i, choice in enumerate(choices, 1):
+            print(Fore.GREEN + f"{i}. {choice.choice_text}" + Style.RESET_ALL)
+
+        while True:
+            try:
+                user_choice = int(input(Fore.BLUE + "\nSelect your answer: " + Style.RESET_ALL)) - 1
+                if 0 <= user_choice < len(choices):
+                    selected_choice = choices[user_choice]
+                    if selected_choice.is_correct:
+                        print(Fore.GREEN + "Correct!" + Style.RESET_ALL)
+                        score += 1
+                    else:
+                        print(Fore.RED + "Incorrect!" + Style.RESET_ALL)
+
+                    UserAnswer(
+                        user_id=current_user_id,
+                        question_id=question._question_id,
+                        choice_id=selected_choice._choice_id
+                    ).save()
+
+                    break
+                else:
+                    print(Fore.RED + "Invalid choice. Please select a valid option." + Style.RESET_ALL)
+            except ValueError:
+                print(Fore.RED + "Invalid input. Please enter a number." + Style.RESET_ALL)
+
+        print(Fore.MAGENTA + "-" * 20 + Style.RESET_ALL)
+
+    print(Fore.CYAN + f"\nYou have completed the trivia! Your total score is: {score}/{num_questions}" + Style.RESET_ALL)
