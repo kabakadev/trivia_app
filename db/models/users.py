@@ -32,6 +32,7 @@ class User:
                 CREATE TABLE IF NOT EXISTS users(
                 user_id INTEGER PRIMARY KEY,
                 username TEXT NOT NULL,
+                password TEXT NOT NULL
                 is_admin BOOLEAN DEFAULT FALSE
                 )
             """
