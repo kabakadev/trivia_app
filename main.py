@@ -34,4 +34,34 @@ def prompt_user_input(prompt,valid_options=None):
         if valid_options is None or user_input in valid_options:
             return user_input
         print(f"Invalid input. Please enter one of: {', '.join(valid_options)}")
+def login():
+    while True:
+        print("\nLogin / Registration")
+        display_users()
+
+        username = input("Enter your username(or 'q' to exit): ").strip()
+        if username == 'q':
+            print("Exiting the login section.")
+            return None
+        user = User.get_user_by_username(username)
+        if user:
+            print(f"Welcome back, {user.username}!")
+            return user
+        print("User not founf. Would you like to create a new user?")
+        choice = prompt_user_input(
+            "Type 'yes' to create, 'no' to retry, or 'q' to quit: ",
+            valid_options=['yes','no','q']
+        )
+        if choice == 'q':
+            return None
+        elif choice == 'yes':
+            is_admin = prompt_user_input(
+                "Create an Admin? Type 'yes' for Admin, 'no' for Regular: ",
+                valid_options=['yes','no']
+            ) == 'yes'
+            new_user = User(username=username, is_admin=is_admin)
+            new_user.save()
+            print(f"User, '{username}' created successfully.")
+            return new_user
+
 
