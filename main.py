@@ -71,3 +71,15 @@ def ensure_admin_exists():
         admin_user = User(username=username, is_admin=True)
         admin_user.save()
         print(f"Admin user '{username}' created successfully.")
+
+def display_menu(user):
+    """Display menu options based on user role."""
+    options=[
+        "View all questions",
+        "Play trivia",
+        "Logout",
+        "Exit"
+    ]
+    
+    adminOptions = ["Add new question", "Delete question"] + options
+    return adminOptions if user.is_admin else options
