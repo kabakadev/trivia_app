@@ -27,3 +27,11 @@ def display_users():
             print(f"-{user.username} ({status}) ")
     else:
         print("No users have been created at the moment.")
+def prompt_user_input(prompt,valid_options=None):
+    """Helper function to get validated user input"""
+    while True:
+        user_input = input(prompt).strip().lower()
+        if valid_options is None or user_input in valid_options:
+            return user_input
+        print(f"Invalid input. Please enter one of: {', '.join(valid_options)}")
+
