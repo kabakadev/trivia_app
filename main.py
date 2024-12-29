@@ -63,5 +63,11 @@ def login():
             new_user.save()
             print(f"User, '{username}' created successfully.")
             return new_user
-
-
+def ensure_admin_exists():
+    """make sure that we have atleast one admin"""
+    if not User.get_all_users():
+        print("No users found. Creating an admin account.")
+        username = input("Enter a username for the admin: ").strip()
+        admin_user = User(username=username, is_admin=True)
+        admin_user.save()
+        print(f"Admin user '{username}' created successfully.")
