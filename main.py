@@ -83,6 +83,10 @@ def display_menu(user):
     
     adminOptions = ["Add new question", "Delete question"] + options
     return adminOptions if user.is_admin else options
+def exit_main_menu():
+    # Function to handle exiting the main menu
+    raise StopIteration
+
 def handle_menu_choice(choice,user):
     """Handle user menu choices"""
     admin_actions = {
@@ -92,7 +96,7 @@ def handle_menu_choice(choice,user):
     common_actions = {
         0:view_all_questions,
         1:lambda:play_trivia(user.user_id),
-        2:lambda:print(f"Logging out {user.username}"),
+        2:lambda:(print(f"Logging out {user.username}"), exit_main_menu()),
         3:lambda:exit("exiting the trivia app")
     }
     if user.is_admin:
@@ -102,3 +106,22 @@ def handle_menu_choice(choice,user):
             common_actions[choice -2]()
     else:
         common_actions[choice]()
+
+
+def main_menu(user):
+    """main menu for logged-in users"""
+    try:
+        while True:
+            print(f"\nUser: {user.username} | Status:{'admin' if user.is_admin else 'regular'}")
+            options = display_menu(user)
+            choice = get_user_choice(options)
+            handle_menu_choice(choice,user)
+    except StopIteration:
+        print("Returning to login screen...")
+if __name__ == "__main__":
+    create_tables()
+    ensure_admin_exists()
+    while True:
+        user = login()
+        if user:
+            main_menu(user)
