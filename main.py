@@ -3,7 +3,7 @@ from db.models.choices import Choice
 from db.models.user_answers import UserAnswer
 from db.models.users import User
 from functions.menu_functions import display_menu, handle_menu_choice
-from functions.user_functions import login,ensure_admin_exists
+from functions.user_functions import login, ensure_admin_exists
 from seed.seed_data import seed_questions
 from auth import register_user
 from lib.helpers import get_user_choice
@@ -16,6 +16,7 @@ def create_tables():
     Question.create_table()
     UserAnswer.create_table()
     Choice.create_table()
+    
 def authentication_menu():
     """Handle user registration, login and exit"""
     while True:
@@ -23,21 +24,12 @@ def authentication_menu():
         print(Fore.GREEN + "1. Register a new User" + Style.RESET_ALL)
         print(Fore.GREEN + "2. Log in" + Style.RESET_ALL)
         print(Fore.GREEN + "3. Exit" + Style.RESET_ALL)
-
         try:
             choice = int(input(Fore.BLUE + '\nEnter Your choice: ' + Style.RESET_ALL))
             if choice == 1:
-                username = input(Fore.BLUE + "Enter a username: " + Style.RESET_ALL).strip()
-                password = input(Fore.BLUE + "Enter a password: " + Style.RESET_ALL).strip()
-                register_user(username,password)
+                register_user()
             elif choice == 2:
-                username = input(Fore.BLUE + "Enter your username: " + Style.RESET_ALL).strip()
-                password = input(Fore.BLUE + "Enter your password: " + Style.RESET_ALL).strip()
-                if verify_password(username, password):
-                    print(Fore.GREEN + f"Login successful! Welcome, {username}!" + Style.RESET_ALL)
-                    return User.get_user_by_username(username)  
-                else:
-                    print(Fore.RED + "Login failed. Incorrect username or password." + Style.RESET_ALL)
+                login()
             elif choice == 3:
                 print(Fore.MAGENTA + "Exiting the app. Goodbye!" + Style.RESET_ALL)
                 return None
