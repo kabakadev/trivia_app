@@ -91,9 +91,9 @@ After the cloning is complete, there should ba a new directory, you can go into 
 Admins can:
 
 - Add new trivia questions.
-- Edit existing questions.
 - Delete questions.
 - View all questions.
+- Play the trivia game.
 
 ### Regular User Menu
 
