@@ -16,63 +16,32 @@ def create_tables():
     Question.create_table()
     UserAnswer.create_table()
     Choice.create_table()
-
-
-def main_menu(user):
-    """main menu for logged-in users"""
+def authentication_menu():
+    """Handle user registration, login and exit"""
     while True:
-        print(Fore.YELLOW + "\nWelcome to the Trivia App!" + Style.RESET_ALL)
-        print(Fore.GREEN + "1. Register a New User" + Style.RESET_ALL)
-        print(Fore.GREEN + "2. Log In" + Style.RESET_ALL)
+        print(Fore.YELLOW + "\nWelcome to the trivia app!" + Style.RESET_ALL)
+        print(Fore.GREEN + "1. Register a new User" + Style.RESET_ALL)
+        print(Fore.GREEN + "2. Log in" + Style.RESET_ALL)
         print(Fore.GREEN + "3. Exit" + Style.RESET_ALL)
 
         try:
-            choice = int(input(Fore.BLUE + "\nEnter your choice: " + Style.RESET_ALL))
-
+            choice = int(input(Fore.BLUE + '\nEnter Your choice: ' + Style.RESET_ALL))
             if choice == 1:
-                # Registration
-                username = input(Fore.BLUE + "Enter a username: " + Style.RESET_ALL)
-                password = input(Fore.BLUE + "Enter a password: " + Style.RESET_ALL)
-                register_user(username, password)
-
+                username = input(Fore.BLUE + "Enter a username: " + Style.RESET_ALL).strip()
+                password = input(Fore.BLUE + "Enter a password: " + Style.RESET_ALL).strip()
+                register_user(username,password)
             elif choice == 2:
-                # Login
-                username = input(Fore.BLUE + "Enter your username: " + Style.RESET_ALL)
-                password = input(Fore.BLUE + "Enter your password: " + Style.RESET_ALL)
+                username = input(Fore.BLUE + "Enter your username: " + Style.RESET_ALL).strip()
+                password = input(Fore.BLUE + "Enter your password: " + Style.RESET_ALL).strip()
                 if verify_password(username, password):
                     print(Fore.GREEN + f"Login successful! Welcome, {username}!" + Style.RESET_ALL)
-                    current_user = {"username": username, "is_admin": username == "admin"}  # Example admin logic
-                    break
+                    return User.get_user_by_username(username)  
                 else:
                     print(Fore.RED + "Login failed. Incorrect username or password." + Style.RESET_ALL)
-
             elif choice == 3:
-                # Exit
                 print(Fore.MAGENTA + "Exiting the app. Goodbye!" + Style.RESET_ALL)
-                return
-
+                return None
             else:
-                print(Fore.RED + "Invalid choice. Please select a valid option." + Style.RESET_ALL)
-
+                print(Fore.RED + "Invalid choice. Please select a valid option. " + Style.RESET_ALL)
         except ValueError:
-            print(Fore.RED + "Invalid input. Please enter a number." + Style.RESET_ALL)
-
-    try:
-        while True:
-            print(f"Fore.CYAN + \nUser: {user.username} | Status:{'admin' if user.is_admin else 'regular'}")
-            print(Fore.YELLOW + "\nMain Menu:" + Style.RESET_ALL)
-            options = display_menu(user)
-            choice = get_user_choice(options)
-            handle_menu_choice(choice,user)
-    except StopIteration:
-        print("Returning to login screen...")
-if __name__ == "__main__":
-    create_tables() 
-    # seed_questions()
-    ensure_admin_exists()
-    while True:
-        user_log = login()
-        if user_log:
-            main_menu(user_log)
-        else:
-            break
+            print(Fore.RED + "Invalid input, please enter a number" + Style.RESET_ALL())
