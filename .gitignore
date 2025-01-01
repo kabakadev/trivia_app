@@ -2,8 +2,4 @@
 *.pyc
 __pycache__/
 
-# Ignore SQLite database files
-*.db
 
-# Test files
-test.pyc
