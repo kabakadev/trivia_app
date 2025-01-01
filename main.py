@@ -10,10 +10,7 @@ from auth import register_user, verify_password,hash_password
 
 from colorama import Fore, Style
 
-from lib.helpers import (
-    get_user_choice,
-)
-
+from lib.helpers import get_user_choice
 def create_tables():
 
 
