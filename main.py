@@ -30,7 +30,7 @@ def main_menu(user):
         print("Returning to login screen...")
 if __name__ == "__main__":
     create_tables() 
-    seed_questions()
+    # seed_questions()
     ensure_admin_exists()
     while True:
         user = login()
