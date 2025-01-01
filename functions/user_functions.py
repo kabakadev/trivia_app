@@ -20,50 +20,73 @@ def prompt_user_input(prompt,valid_options=None):
         print(f"Invalid input. Please enter one of: {', '.join(valid_options)}")
 
 def login():
+    """
+    Handles user login.
+    Returns a User object if login is successful, otherwise None.
+    """
     while True:
-        print("\nWelcome to the login or registration section")
-        print("The list of users is shown below both regular and admin, currently there is no encryption")
-        users = User.get_all_users()
-        if users:
-            print("\nCurrent users:")
-            for user in users:
-                status = "Admin" if user.is_admin else "Regular"
-                print(f"- {user.username} ({status})")
-        else:
-            print("\nNo users found. Please register a new user.")
-
+        print("\nWelcome to the login section.")
         username = input("Enter your username (or 'q' to exit): ").strip()
-        if username == 'q':
-            print("Exiting the login section, feel free to come back later.")
+        
+        if username.lower() == 'q':
+            print("Exiting the login section. Feel free to come back later.")
             return None
 
         user = User.get_user_by_username(username)
         if user:
             password = input("Enter your password: ").strip()
             if verify_password(user.password, password):
-                print(f"Welcome back, {user.username}! Please explore the options below.")
+                print(f"Login successful! Welcome, {user.username}.")
                 return user
             else:
                 print("Incorrect password. Please try again.")
         else:
-            print("User not found. Do you want to create a new user?")
-            choice = input("Type 'yes' to create a new account, 'no' to retry, or 'q' to leave: ").strip().lower()
-            if choice == 'q':
+            print("User not found.")
+            retry = input("Would you like to retry? Type 'yes' to retry or 'no' to exit: ").strip().lower()
+            if retry == 'no':
                 return None
-            elif choice == 'yes':
-                is_admin = input("Do you want to create an admin or a regular user? Type 'yes' for ADMIN or 'no' for REGULAR: ").strip().lower()
-                is_admin = is_admin == 'yes'  # Convert to True/False
-                password = input("Enter a password for the new account: ").strip()
-                hashed_password = hash_password(password)  # Hash the password
-                print(hashed_password)
 
-                new_user = User(username=username, password=hashed_password, is_admin=is_admin)
-                new_user.save()
 
-                print(f"User '{username}' created successfully.")
-                return new_user
-            else:
-                print("Retrying login...")
+def register_user():
+    """
+    Handles user registration.
+    Returns the newly created User object.
+    """
+    print("\nWelcome to the registration section.")
+    while True:
+        username = input("Enter a username: ").strip()
+        if User.get_user_by_username(username):
+            print("This username already exists. Please try a different one.")
+            continue
+
+        is_admin = input("Is this an admin account? Type 'yes' for ADMIN or 'no' for REGULAR: ").strip().lower()
+        is_admin = is_admin == 'yes'  # Convert to True/False
+
+        password = input("Enter a password: ").strip()
+        hashed_password = hash_password(password)  # Hash the password for secure storage
+        print("Registering new user...")
+
+        new_user = User(username=username, password=hashed_password, is_admin=is_admin)
+        new_user.save()
+
+        print(f"User '{username}' created successfully.")
+        return new_user
+
+
+def admin_display_users():
+    """
+    Displays a list of all users for administrative purposes.
+    Accessible only by admin users.
+    """
+    users = User.get_all_users()
+    if not users:
+        print("\nNo users found.")
+        return
+
+    print("\nCurrent users:")
+    for user in users:
+        status = "Admin" if user.is_admin else "Regular"
+        print(f"- {user.username} ({status})")
 
 
 

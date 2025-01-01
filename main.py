@@ -45,3 +45,27 @@ def authentication_menu():
                 print(Fore.RED + "Invalid choice. Please select a valid option. " + Style.RESET_ALL)
         except ValueError:
             print(Fore.RED + "Invalid input, please enter a number" + Style.RESET_ALL())
+def main_menu(user):
+    """Display the main menu for logged-in users and handle their choices."""
+    try:
+        while True:
+            print(Fore.CYAN + f"\nUser: {user.username} | Status: {'Admin' if user.is_admin else 'Regular'}" + Style.RESET_ALL)
+            print(Fore.YELLOW + "\nMain Menu:" + Style.RESET_ALL)
+            options = display_menu(user)
+            choice = get_user_choice(options)
+            handle_menu_choice(choice, user)
+    except StopIteration:
+        print(Fore.RED + "Returning to the login screen..." + Style.RESET_ALL)
+
+
+if __name__ == "__main__":
+    create_tables()
+    ensure_admin_exists()
+
+   
+    while True:
+        user = authentication_menu()
+        if user:
+            main_menu(user)
+        else:
+            break
