@@ -1,4 +1,6 @@
 from db.models.users import User
+from colorama import Fore, Style
+from auth import verify_password,hash_password
 def display_users():
     """display a list of uders"""
     users = User.get_all_users()
@@ -19,33 +21,52 @@ def prompt_user_input(prompt,valid_options=None):
 
 def login():
     while True:
-        print("\nLogin / Registration")
-        display_users()
+        print("\nWelcome to the login or registration section")
+        print("The list of users is shown below both regular and admin, currently there is no encryption")
+        users = User.get_all_users()
+        if users:
+            print("\nCurrent users:")
+            for user in users:
+                status = "Admin" if user.is_admin else "Regular"
+                print(f"- {user.username} ({status})")
+        else:
+            print("\nNo users found. Please register a new user.")
 
-        username = input("Enter your username(or 'q' to exit): ").strip()
+        username = input("Enter your username (or 'q' to exit): ").strip()
         if username == 'q':
-            print("Exiting the login section.")
+            print("Exiting the login section, feel free to come back later.")
             return None
+
         user = User.get_user_by_username(username)
         if user:
-            print(f"Welcome back, {user.username}!")
-            return user
-        print("User not founf. Would you like to create a new user?")
-        choice = prompt_user_input(
-            "Type 'yes' to create, 'no' to retry, or 'q' to quit: ",
-            valid_options=['yes','no','q']
-        )
-        if choice == 'q':
-            return None
-        elif choice == 'yes':
-            is_admin = prompt_user_input(
-                "Create an Admin? Type 'yes' for Admin, 'no' for Regular: ",
-                valid_options=['yes','no']
-            ) == 'yes'
-            new_user = User(username=username, is_admin=is_admin)
-            new_user.save()
-            print(f"User, '{username}' created successfully.")
-            return new_user
+            password = input("Enter your password: ").strip()
+            if verify_password(user.password, password):
+                print(f"Welcome back, {user.username}! Please explore the options below.")
+                return user
+            else:
+                print("Incorrect password. Please try again.")
+        else:
+            print("User not found. Do you want to create a new user?")
+            choice = input("Type 'yes' to create a new account, 'no' to retry, or 'q' to leave: ").strip().lower()
+            if choice == 'q':
+                return None
+            elif choice == 'yes':
+                is_admin = input("Do you want to create an admin or a regular user? Type 'yes' for ADMIN or 'no' for REGULAR: ").strip().lower()
+                is_admin = is_admin == 'yes'  # Convert to True/False
+                password = input("Enter a password for the new account: ").strip()
+                hashed_password = hash_password(password)  # Hash the password
+                print(hashed_password)
+
+                new_user = User(username=username, password=hashed_password, is_admin=is_admin)
+                new_user.save()
+
+                print(f"User '{username}' created successfully.")
+                return new_user
+            else:
+                print("Retrying login...")
+
+
+
 def ensure_admin_exists():
     """make sure that we have atleast one admin"""
     if not User.get_all_users():
