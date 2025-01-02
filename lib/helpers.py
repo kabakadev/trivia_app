@@ -5,6 +5,7 @@ from rich.console import Console
 from db.models.questions import Question
 from db.models.choices import Choice
 from db.models.user_answers import UserAnswer
+from colorama import Fore, Style
 def get_user_choice(options):
     print("\nPlease choose an option:")
     for index, option in enumerate(options):
@@ -129,7 +130,6 @@ def view_all_questions():
 console = Console()
 
 
-from colorama import Fore, Style
 
 def play_trivia(current_user_id):
     print(Fore.CYAN + "\nWelcome to the Trivia Game!" + Style.RESET_ALL)

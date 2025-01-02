@@ -61,7 +61,7 @@ class UserAnswer:
                 self._user_answer_id = CURSOR.lastrowid
             else:
                 sql = """
-                UPDATE user_answers SET user_id = ?, question_id = ?, choice_id = ?, WHERE user_answer_id = ?
+                UPDATE user_answers SET user_id = ?, question_id = ?, choice_id = ? WHERE user_answer_id = ?
                 """
          
                 CURSOR.execute(sql, (self.user_id, self.question_id, self.choice_id, self._user_answer_id))
@@ -75,6 +75,24 @@ class UserAnswer:
                 WHERE user_id = ?
                 """
             CURSOR.execute(sql, (user_id,))
+            rows = CURSOR.fetchall()
+            user_answers = []
+            if rows:
+                for row in rows:
+                    user_answer = cls(row[1], row[2], row[3])
+                    user_answer._user_answer_id = row[0]
+                    user_answers.append(user_answer)
+                return user_answers
+            return None
+    @classmethod
+    def get_all_answers(cls):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """
+                SELECT *
+                FROM user_answers
+                """
+            CURSOR.execute(sql)
             rows = CURSOR.fetchall()
             user_answers = []
             if rows:
@@ -119,6 +137,25 @@ class UserAnswer:
                 user_answer._user_answer_id = row[0]
                 return user_answer
             return None
+    @classmethod
+    def get_user_scores(cls):
+        user_scores = {}
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """
+            SELECT u.username, COUNT(c.is_correct)
+            FROM user_answers ua
+            JOIN choices c ON ua.choice_id = c.choice_id
+            JOIN users u ON ua.user_id = u.user_id
+            WHERE c.is_correct = 1
+            GROUP BY ua.user_id
+                """
+            CURSOR.execute(sql)
+            rows = CURSOR.fetchall()
+            for row in rows:
+                user_scores[row[0]] = row[1]
+            return [{"username":username,"score":score} for username,score in user_scores.items()]
+
     def delete(self):
         if self._user_answer_id is None:
             raise ValueError("answers for this specific user does not exist in the database")
