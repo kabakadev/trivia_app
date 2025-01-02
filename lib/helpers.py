@@ -6,6 +6,9 @@ from db.models.questions import Question
 from db.models.choices import Choice
 from db.models.user_answers import UserAnswer
 from colorama import Fore, Style
+
+import random 
+import time
 def get_user_choice(options):
     print("\nPlease choose an option:")
     for index, option in enumerate(options):
@@ -144,7 +147,10 @@ def play_trivia(current_user_id):
         print(Fore.GREEN + f"{idx}. {category}" + Style.RESET_ALL)
     print(Fore.GREEN + "0. Exit to Main Menu" + Style.RESET_ALL)
 
-    while True:
+    #select category
+    selected_category = None
+
+    while not selected_category:
         try:
             category_choice = int(input(Fore.BLUE + "\nSelect a category by number: " + Style.RESET_ALL))
             if category_choice == 0:
@@ -161,7 +167,9 @@ def play_trivia(current_user_id):
     if not questions:
         print(Fore.RED + f"No questions available in the category: {selected_category}." + Style.RESET_ALL)
         return
+    random.shuffle(questions)
 
+    #number of questions to answer
     while True:
         try:
             num_questions = int(input(Fore.BLUE + f"\nHow many questions would you like to answer? (1-{len(questions)}): " + Style.RESET_ALL))
@@ -172,24 +180,34 @@ def play_trivia(current_user_id):
         except ValueError:
             print(Fore.RED + "Invalid input. Please enter a number." + Style.RESET_ALL)
 
+    #gameplay loop
     score = 0
     for idx, question in enumerate(questions[:num_questions], 1):
         print(Fore.YELLOW + f"\nQuestion {idx}/{num_questions}: {question.question_text}" + Style.RESET_ALL)
+
         choices = Choice.get_choices_by_question_id(question._question_id)
         for i, choice in enumerate(choices, 1):
             print(Fore.GREEN + f"{i}. {choice.choice_text}" + Style.RESET_ALL)
-
+        
+        #user answer with timer
+        start_time =time.time()
         while True:
             try:
                 user_choice = int(input(Fore.BLUE + "\nSelect your answer: " + Style.RESET_ALL)) - 1
                 if 0 <= user_choice < len(choices):
                     selected_choice = choices[user_choice]
-                    if selected_choice.is_correct:
-                        print(Fore.GREEN + "Correct!" + Style.RESET_ALL)
+                    elapsed_time = time.time() - start_time
+                    if elapsed_time >15:
+                        print(Fore.RED + "Time's up! moving on to the next question, be quick next time" +Style.RESET_ALL)
+                    elif selected_choice.is_correct:
+                        print(Fore.GREEN + "✔️ Correct!" + Style.RESET_ALL)
                         score += 1
                     else:
-                        print(Fore.RED + "Incorrect!" + Style.RESET_ALL)
-
+                        print(Fore.RED + "❌ Incorrect!" + Style.RESET_ALL)
+                        correct_choice = next(choice for choice in choices if choice.is_correct)
+                        print(Fore.YELLOW + f"The correct answer was: {correct_choice.choice_text}" + Style.RESET_ALL)
+                    
+                    #save the answer
                     UserAnswer(
                         user_id=current_user_id,
                         question_id=question._question_id,
@@ -204,4 +222,17 @@ def play_trivia(current_user_id):
 
         print(Fore.MAGENTA + "-" * 20 + Style.RESET_ALL)
 
-    print(Fore.CYAN + f"\nYou have completed the trivia! Your total score is: {score}/{num_questions}" + Style.RESET_ALL)
+    accuracy = (score /num_questions) * 100
+    print(Fore.CYAN + f"\nYou have completed the Trivia! Your total score is:{score}/{num_questions}" +Style.RESET_ALL)
+    print(Fore.YELLOW + f"\nAccuracy:{accuracy:.2f}%" + Style.RESET_ALL)
+
+    #display the leaderboard
+    optional = input(Fore.MAGENTA + "\nwould you like to check out the leaderboard for top scores!(type 'yes' to view or 'no' to cancel) " + Style.RESET_ALL)
+
+    from leaderboard.leader_board import display_leaderboard
+    if optional == 'yes':
+        display_leaderboard()
+    elif optional == 'no':
+        print(Fore.GREEN + "Alright! Returning to the main menu." + Style.RESET_ALL)
+    else:
+        print(Fore.RED + "Invalid input. Skipping leaderboard display." + Style.RESET_ALL)

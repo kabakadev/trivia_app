@@ -3,12 +3,13 @@ from db.models.choices import Choice
 from db.models.user_answers import UserAnswer
 from db.models.users import User
 from functions.menu_functions import display_menu, handle_menu_choice
-from functions.user_functions import login, ensure_admin_exists,display_registered_users
+from functions.user_functions import ensure_admin_exists,display_registered_users
 # from seed.seed_data import seed_questions
 from auth import register_user
 from lib.helpers import get_user_choice
 from colorama import Fore, Style
-from auth import register_user
+from auth import register_user,login
+from leaderboard.leader_board import display_leaderboard
 def create_tables():
     User.create_table()
     Question.create_table()
@@ -22,7 +23,8 @@ def authentication_menu():
         print(Fore.GREEN + "1. Register a new User" + Style.RESET_ALL)
         print(Fore.GREEN + "2. Log in" + Style.RESET_ALL)
         print(Fore.GREEN + "3. Display Registered Users" + Style.RESET_ALL)
-        print(Fore.GREEN + "4. Exit" + Style.RESET_ALL)
+        print(Fore.GREEN + "4. Display leaderboard" + Style.RESET_ALL)
+        print(Fore.GREEN + "5. Exit" + Style.RESET_ALL)
         try:
             choice = int(input(Fore.BLUE + '\nEnter Your choice: ' + Style.RESET_ALL))
             if choice == 1:
@@ -34,12 +36,14 @@ def authentication_menu():
             elif choice == 3:
                 display_registered_users()
             elif choice == 4:
+                display_leaderboard()
+            elif choice == 5:
                 print(Fore.MAGENTA + "Exiting the app. Goodbye!" + Style.RESET_ALL)
                 return None
             else:
                 print(Fore.RED + "Invalid choice. Please select a valid option. " + Style.RESET_ALL)
         except ValueError:
-            print(Fore.RED + "Invalid input, please enter a number" + Style.RESET_ALL())
+            print(Fore.RED + "Invalid input, please enter a number" + Style.RESET_ALL)
 def main_menu(user):
     """Display the main menu for logged-in users and handle their choices."""
     try:

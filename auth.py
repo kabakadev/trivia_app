@@ -46,3 +46,29 @@ def register_user():
         )
         print(f"User {username} registered successfully!")
         return User.get_user_by_username(username)  # Return the newly created user
+def login():
+    """
+    Handles user login.
+    Returns a User object if login is successful, otherwise None.
+    """
+    while True:
+        print("\nWelcome to the login section.")
+        username = input("Enter your username (or 'q' to exit): ").strip()
+        
+        if username.lower() == 'q':
+            print("Exiting the login section. Feel free to come back later.")
+            return None
+
+        user = User.get_user_by_username(username)
+        if user:
+            password = input("Enter your password: ").strip()
+            if verify_password(username, password):
+                print(f"Login successful! Welcome, {user.username}.")
+                return user
+            else:
+                print("Incorrect password. Please try again.")
+        else:
+            print("User not found.")
+            retry = input("Would you like to retry? Type 'yes' to retry or 'no' to exit: ").strip().lower()
+            if retry == 'no':
+                return None
