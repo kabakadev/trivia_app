@@ -8,7 +8,6 @@ from db.models.user_answers import UserAnswer
 from colorama import Fore, Style
 
 import random 
-import time
 def get_user_choice(options):
     print("\nPlease choose an option:")
     for index, option in enumerate(options):
@@ -189,17 +188,15 @@ def play_trivia(current_user_id):
         for i, choice in enumerate(choices, 1):
             print(Fore.GREEN + f"{i}. {choice.choice_text}" + Style.RESET_ALL)
         
-        #user answer with timer
-        start_time =time.time()
+        
         while True:
             try:
                 user_choice = int(input(Fore.BLUE + "\nSelect your answer: " + Style.RESET_ALL)) - 1
                 if 0 <= user_choice < len(choices):
                     selected_choice = choices[user_choice]
-                    elapsed_time = time.time() - start_time
-                    if elapsed_time >15:
-                        print(Fore.RED + "Time's up! moving on to the next question, be quick next time" +Style.RESET_ALL)
-                    elif selected_choice.is_correct:
+                 
+                   
+                    if selected_choice.is_correct:
                         print(Fore.GREEN + "✔️ Correct!" + Style.RESET_ALL)
                         score += 1
                     else:
