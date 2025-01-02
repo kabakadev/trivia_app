@@ -1,7 +1,7 @@
 from db.models.users import User
 from colorama import Fore, Style
-from auth import verify_password,hash_password
-def display_users():
+from auth import verify_password
+def display_registered_users():
     """display a list of uders"""
     users = User.get_all_users()
     if users:
@@ -46,21 +46,6 @@ def login():
             if retry == 'no':
                 return None
 
-
-def admin_display_users():
-    """
-    Displays a list of all users for administrative purposes.
-    Accessible only by admin users.
-    """
-    users = User.get_all_users()
-    if not users:
-        print("\nNo users found.")
-        return
-
-    print("\nCurrent users:")
-    for user in users:
-        status = "Admin" if user.is_admin else "Regular"
-        print(f"- {user.username} ({status})")
 
 
 

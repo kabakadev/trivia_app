@@ -3,12 +3,12 @@ from db.models.choices import Choice
 from db.models.user_answers import UserAnswer
 from db.models.users import User
 from functions.menu_functions import display_menu, handle_menu_choice
-from functions.user_functions import login, ensure_admin_exists
-from seed.seed_data import seed_questions
+from functions.user_functions import login, ensure_admin_exists,display_registered_users
+# from seed.seed_data import seed_questions
 from auth import register_user
 from lib.helpers import get_user_choice
 from colorama import Fore, Style
-from auth import register_user, verify_password
+from auth import register_user
 def create_tables():
     User.create_table()
     Question.create_table()
@@ -21,7 +21,8 @@ def authentication_menu():
         print(Fore.YELLOW + "\nWelcome to the trivia app!" + Style.RESET_ALL)
         print(Fore.GREEN + "1. Register a new User" + Style.RESET_ALL)
         print(Fore.GREEN + "2. Log in" + Style.RESET_ALL)
-        print(Fore.GREEN + "3. Exit" + Style.RESET_ALL)
+        print(Fore.CYAN + "3. Display Registered Users" + Style.RESET_ALL)
+        print(Fore.GREEN + "4. Exit" + Style.RESET_ALL)
         try:
             choice = int(input(Fore.BLUE + '\nEnter Your choice: ' + Style.RESET_ALL))
             if choice == 1:
@@ -31,6 +32,8 @@ def authentication_menu():
                 if user:
                     return user
             elif choice == 3:
+                display_registered_users()
+            elif choice == 4:
                 print(Fore.MAGENTA + "Exiting the app. Goodbye!" + Style.RESET_ALL)
                 return None
             else:
