@@ -10,13 +10,11 @@ from lib.helpers import get_user_choice
 from colorama import Fore, Style
 from auth import register_user, verify_password
 def create_tables():
-
-
     User.create_table()
     Question.create_table()
     UserAnswer.create_table()
     Choice.create_table()
-    
+
 def authentication_menu():
     """Handle user registration, login and exit"""
     while True:
@@ -29,7 +27,9 @@ def authentication_menu():
             if choice == 1:
                 register_user()
             elif choice == 2:
-                login()
+                user = login()
+                if user:
+                    return user
             elif choice == 3:
                 print(Fore.MAGENTA + "Exiting the app. Goodbye!" + Style.RESET_ALL)
                 return None
