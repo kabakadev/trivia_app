@@ -21,7 +21,7 @@ def authentication_menu():
         print(Fore.YELLOW + "\nWelcome to the trivia app!" + Style.RESET_ALL)
         print(Fore.GREEN + "1. Register a new User" + Style.RESET_ALL)
         print(Fore.GREEN + "2. Log in" + Style.RESET_ALL)
-        print(Fore.CYAN + "3. Display Registered Users" + Style.RESET_ALL)
+        print(Fore.GREEN + "3. Display Registered Users" + Style.RESET_ALL)
         print(Fore.GREEN + "4. Exit" + Style.RESET_ALL)
         try:
             choice = int(input(Fore.BLUE + '\nEnter Your choice: ' + Style.RESET_ALL))
