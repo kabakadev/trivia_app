@@ -74,7 +74,8 @@ class UserAnswer:
             user_answer.question_id = row[2]
             user_answer.choice_id = row[3]
         else:
-            user_answer = cls(row[1],row[2],row[3], id=row[0])
+            user_answer = cls(row[1],row[2],row[3])
+            user_answer._user_answer_id = row[0]
             cls.all[user_answer._user_answer_id] = user_answer
         return user_answer
     @classmethod
@@ -88,14 +89,7 @@ class UserAnswer:
                 """
             CURSOR.execute(sql, (user_id,))
             rows = CURSOR.fetchall()
-            user_answers = []
-            if rows:
-                for row in rows:
-                    user_answer = cls(row[1], row[2], row[3])
-                    user_answer._user_answer_id = row[0]
-                    user_answers.append(user_answer)
-                return user_answers
-            return None
+            return [cls.instance_from_db(row) for row in rows]
     @classmethod
     def get_user_answers_by_question_id(cls, question_id):
         with get_db_connection() as CONN:
@@ -107,14 +101,7 @@ class UserAnswer:
                 """
             CURSOR.execute(sql, (question_id,))
             rows = CURSOR.fetchall()
-            user_answers = []
-            if rows:
-                for row in rows:
-                    user_answer = cls(row[1], row[2], row[3])
-                    user_answer._user_answer_id = row[0]
-                    user_answers.append(user_answer)
-                return user_answers
-            return None
+            return [cls.instance_from_db(row) for row in rows] 
     @classmethod
     def get_user_answer_by_user_and_question_id(cls, user_id, question_id):
         with get_db_connection() as CONN:
@@ -126,11 +113,7 @@ class UserAnswer:
                 """
             CURSOR.execute(sql, (user_id, question_id))
             row = CURSOR.fetchone()
-            if row:
-                user_answer = cls(row[1], row[2], row[3])
-                user_answer._user_answer_id = row[0]
-                return user_answer
-            return None
+            return cls.instance_from_db(row) if row else None
     def delete(self):
         if self._user_answer_id is None:
             raise ValueError("answers for this specific user does not exist in the database")
