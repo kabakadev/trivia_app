@@ -1,5 +1,6 @@
 from db import get_db_connection
 class UserAnswer:
+    all = {}
     def __init__(self,user_id,question_id,choice_id):
         self._user_answer_id = None
         self.user_id = user_id
@@ -65,6 +66,17 @@ class UserAnswer:
                 """
          
                 CURSOR.execute(sql, (self.user_id, self.question_id, self.choice_id, self._user_answer_id))
+    @classmethod
+    def instance_from_db(cls,row):
+        user_answer = cls.all.get(row[0])
+        if user_answer:
+            user_answer.user_id = row[1]
+            user_answer.question_id = row[2]
+            user_answer.choice_id = row[3]
+        else:
+            user_answer = cls(row[1],row[2],row[3], id=row[0])
+            cls.all[user_answer._user_answer_id] = user_answer
+        return user_answer
     @classmethod
     def get_user_answers_by_user_id(cls, user_id):
         with get_db_connection() as CONN:
