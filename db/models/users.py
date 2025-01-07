@@ -1,5 +1,6 @@
 from db import get_db_connection
 class User:
+    all = {}
     def __init__(self,username,is_admin):
         self._user_id = None
         self.username = username
@@ -54,21 +55,25 @@ class User:
                     UPDATE users SET username = ?, is_admin = ? WHERE user_id = ?
                 """
                 CURSOR.execute(sql, (self.username, self.is_admin, self._user_id))
-    
+    @classmethod
+    def instance_from_db(cls,row):
+        user = cls.all.get(row[0])
+        if user:
+            user.username = row[1]
+            user.is_admin = bool(row[2])
+        else:
+            user = cls(row[1], bool(row[2]))
+            user._user_id = row[0]
+            cls.all[user._user_id] = user
+        return user
+
     @classmethod
     def get_all_users(cls):
         with get_db_connection() as CONN:
             CURSOR = CONN.cursor()
             sql = "SELECT * FROM users"
             rows = CURSOR.execute(sql).fetchall()
-            users = []
-            for row in rows:
-                user = cls(row[1], bool(row[2]))  
-                user._user_id = row[0]  
-                users.append(user)
-            
-            return users 
-
+            return [cls.instance_from_db(row) for row in rows]
     @classmethod
     def get_user_by_id(cls,user_id):
         with get_db_connection() as CONN:
@@ -81,11 +86,7 @@ class User:
                 WHERE user_id = ?
                 """
             row = CURSOR.execute(sql,(user_id,)).fetchone()
-            if row:
-                user = cls(row[1], bool(row[2])) 
-                user._user_id = row[0] 
-                return user
-        return None 
+            return cls.instance_from_db(row) if row else None
     @classmethod
     def get_user_by_username(cls,username):
         with get_db_connection() as CONN:
@@ -97,11 +98,7 @@ class User:
                 where username = ?
                     """ 
             row = CURSOR.execute(sql,(username,)).fetchone()
-            if row:
-                user = cls(row[1],bool(row[2]))
-                user._user_id = row[0]
-                return user
-            return None
+            return cls.instance_from_db(row) if row else None
     def delete(self):
         if self._user_id == None:
             raise ValueError("this user currently does not exist in the database")
