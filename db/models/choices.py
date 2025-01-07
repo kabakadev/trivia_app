@@ -1,5 +1,6 @@
 from db import get_db_connection
 class Choice:
+    all = {}
     def __init__(self,question_id,choice_text,is_correct):
         self._choice_id = None
         self._question_id = question_id
@@ -62,6 +63,19 @@ class Choice:
                 """
             
                 CURSOR.execute(sql, (self.question_id, self.choice_text, int(self.is_correct), self._choice_id))
+    
+    @classmethod
+    def instance_from_db(cls,row):
+        choice = cls.all.get(row[0])
+        if choice:
+            choice.question_id = row[1]
+            choice.choice_text = row[2]
+            choice.is_correct = row[3]
+        else:
+            choice = cls(row[1],row[2],row[3])
+            choice._choice_id = row[0]
+            cls.all[choice._choice_id] = choice
+        return choice
     @classmethod
     def get_choices_by_question_id(cls, question_id):
         with get_db_connection() as CONN:
@@ -73,14 +87,7 @@ class Choice:
                 """
             CURSOR.execute(sql, (question_id,))
             rows = CURSOR.fetchall()
-            choices = []
-            if rows:
-                for row in rows:
-                    choice = cls(row[1], row[2], bool(row[3])) 
-                    choice._choice_id = row[0]
-                    choices.append(choice)
-                return choices
-            return None
+            return [cls.instance_from_db(row) for row in rows]
     @classmethod
     def get_choice_by_id(cls, choice_id):
         with get_db_connection() as CONN:
@@ -92,11 +99,7 @@ class Choice:
                 """
             CURSOR.execute(sql, (choice_id,))
             row = CURSOR.fetchone()
-            if row:
-                choice = cls(row[1], row[2], bool(row[3]))
-                choice._choice_id = row[0]
-                return choice
-            return None
+            return cls.instance_from_db(row) if row else None
     def delete(self):
         if self._choice_id is None:
             raise ValueError("this choice does not exist in the database")
