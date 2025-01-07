@@ -1,6 +1,7 @@
 
 from db import get_db_connection
 class Question:
+    all = {}
     def __init__(self,question_text,created_by):
         self._question_id = None
         self.question_text = question_text
@@ -52,18 +53,23 @@ class Question:
                 """
                 CURSOR.execute(sql, (self.question_text, self.created_by, self._question_id))
     @classmethod
+    def instance_from_db(cls,row):
+        question = cls.all.get(row[0])
+        if question:
+            question.question_text = row[1]
+            question.created_by = row[2]
+        else:
+            question = cls(row[1],row[2])
+            question._question_id = row[0]
+            cls.all[question._question_id] = question
+        return question
+    @classmethod
     def get_all_questions(cls):
         with get_db_connection() as CONN:
             CURSOR = CONN.cursor()
             sql = "SELECT * FROM questions"
             rows = CURSOR.execute(sql).fetchall()
-            questions = []
-            for row in rows:
-                question = cls(row[1], int(row[2]))  
-                question._question_id = row[0]  
-                questions.append(question)
-            
-            return questions
+            return [cls.instance_from_db(row) for row in rows]
     @classmethod
     def get_question_by_id(cls,question_id):
         with get_db_connection() as CONN:
@@ -76,11 +82,7 @@ class Question:
                 WHERE question_id = ?
                 """
             row = CURSOR.execute(sql,(question_id,)).fetchone()
-            if row:
-                question = cls(row[1], bool(row[2])) 
-                question._question_id = row[0] 
-                return question
-        return None 
+            cls.instance_from_db(row) if row else None
     def delete(self):
         from db.models.choices import Choice
         if self._question_id == None:
