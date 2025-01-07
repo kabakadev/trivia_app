@@ -82,7 +82,7 @@ class Question:
                 WHERE question_id = ?
                 """
             row = CURSOR.execute(sql,(question_id,)).fetchone()
-            cls.instance_from_db(row) if row else None
+            return cls.instance_from_db(row) if row else None
     def delete(self):
         from db.models.choices import Choice
         if self._question_id == None:
@@ -91,8 +91,7 @@ class Question:
         if choices:
             for choice in choices:
                 choice.delete()
-        else:
-            print("No choices associated with this question, something seems off here...")
+    
 
         with get_db_connection() as CONN:
             CURSOR = CONN.cursor()
