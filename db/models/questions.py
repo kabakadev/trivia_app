@@ -83,6 +83,15 @@ class Question:
                 """
             row = CURSOR.execute(sql,(question_id,)).fetchone()
             return cls.instance_from_db(row) if row else None
+    @classmethod
+    def get_question_by_text(cls,text):
+        with get_db_connection() as CONN:
+            CURSOR = CONN.cursor()
+            sql = """
+                SELECT * FROM questions WHERE question_text = ?
+                    """
+            row = CURSOR.execute(sql,(text,)).fetchone()
+            return cls.instance_from_db(row) if row else None
     def delete(self):
         from db.models.choices import Choice
         if self._question_id == None:

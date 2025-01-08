@@ -4,6 +4,7 @@ from db.models.user_answers import UserAnswer
 from db.models.users import User
 from functions.menu_functions import display_menu, handle_menu_choice
 from functions.user_functions import login,ensure_admin_exists
+from seed.seed_data import seed_questions
 
 from lib.helpers import (
     get_user_choice,
@@ -28,6 +29,7 @@ def main_menu(user):
 if __name__ == "__main__":
     create_tables()
     ensure_admin_exists()
+    seed_questions()
     while True:
         user = login()
         if user:
