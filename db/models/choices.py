@@ -29,9 +29,10 @@ class Choice:
 
     @is_correct.setter
     def is_correct(self, is_correct):
-        if not isinstance(is_correct, bool):
-            raise ValueError("is correct must be a boolean either true or false")
-        self._is_correct = is_correct
+        if isinstance(is_correct,int):
+            is_correct = bool(is_correct)
+        if not isinstance(is_correct,bool):
+            raise ValueError("Is correct must be a boolean, either true or false")
     
     @classmethod
     def create_table(cls):
@@ -54,14 +55,14 @@ class Choice:
                 sql = """
                 INSERT INTO choices (question_id, choice_text, is_correct) VALUES (?, ?, ?)
                 """
-            
+                # print(f"Saving choice: question_id={self.question_id}, choice_text='{self.choice_text}', is_correct={int(self.is_correct)}") #weird
                 CURSOR.execute(sql, (self.question_id, self.choice_text, int(self.is_correct)))
                 self._choice_id = CURSOR.lastrowid
             else:
                 sql = """
                 UPDATE choices SET question_id = ?, choice_text = ?, is_correct = ? WHERE choice_id = ?
                 """
-            
+                # print(f"Updating choice: choice_id={self._choice_id}, question_id={self.question_id}, choice_text='{self.choice_text}', is_correct={int(self.is_correct)}") #weird
                 CURSOR.execute(sql, (self.question_id, self.choice_text, int(self.is_correct), self._choice_id))
     
     @classmethod
@@ -72,7 +73,7 @@ class Choice:
             choice.choice_text = row[2]
             choice.is_correct = row[3]
         else:
-            choice = cls(row[1],row[2],row[3])
+            choice = cls(row[1],row[2],bool(row[3]))
             choice._choice_id = row[0]
             cls.all[choice._choice_id] = choice
         return choice
