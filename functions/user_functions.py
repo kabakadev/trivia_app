@@ -26,6 +26,20 @@ def login():
         if username == 'q':
             print("Exiting the login section.")
             return None
+        if len(username) < 3:
+            print("username must have 3 characters or more")
+            continue
+        if not username.isalnum():
+            print ("username must contain only alphanumeric characters")
+            continue
+        if username.isdigit():
+            print("username cannot contain only numbers")
+            continue
+        if not username:
+            print("username cannot be empty")
+            continue
+      
+        
         user = User.get_user_by_username(username)
         if user:
             print(f"Welcome back, {user.username}!")
