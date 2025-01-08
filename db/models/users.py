@@ -13,10 +13,14 @@ class User:
         return self._username
     @username.setter
     def username(self,username):
-        if isinstance(username,str):
-            self._username = username
-        else:
+        if not isinstance(username,str):
             raise ValueError("username must be a string")
+        if not username.isalnum():
+            raise ValueError("username must contain only aphanumeric ")
+        if username.isdigit():
+            raise ValueError("username cannot contain numbers")      
+        if len(username) < 3:
+            raise ValueError("username must be 3 or more characters long")  
     @property
     def is_admin(self):
         return self._is_admin
